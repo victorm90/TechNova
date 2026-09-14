@@ -1,3 +1,5 @@
+@php($alpineModel = $alpineModel ?? false)
+
 {{-- NOMBRE --}}
 <div>
     <label for="{{ $fieldPrefix }}name"
@@ -14,7 +16,11 @@
             id="{{ $fieldPrefix }}name"
             name="name"
             type="text"
-            value="{{ old('name', $customer->name) }}"
+            @if ($alpineModel)
+                x-model="customer.name"
+            @else
+                value="{{ old('name', $customer->name) }}"
+            @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"
@@ -47,7 +53,11 @@
             id="{{ $fieldPrefix }}phone"
             name="phone"
             type="text"
-            value="{{ old('phone', $customer->phone) }}"
+            @if ($alpineModel)
+                x-model="customer.phone"
+            @else
+                value="{{ old('phone', $customer->phone) }}"
+            @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"
@@ -81,13 +91,16 @@
             id="{{ $fieldPrefix }}address"
             name="address"
             rows="3"
+            @if ($alpineModel)
+                x-model="customer.address"
+            @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0 resize-none"
             placeholder="Escriba la dirección particular..."
             maxlength="100"
             autocomplete="street-address"
-            required>{{ old('address', $customer->address) }}</textarea>
+            required>@unless ($alpineModel){{ old('address', $customer->address) }}@endunless</textarea>
     </div>
 
     @error('address')
@@ -112,7 +125,11 @@
             id="{{ $fieldPrefix }}identity_card"
             name="identity_card"
             type="text"
-            value="{{ old('identity_card', $customer->identity_card) }}"
+            @if ($alpineModel)
+                x-model="customer.identity_card"
+            @else
+                value="{{ old('identity_card', $customer->identity_card) }}"
+            @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"

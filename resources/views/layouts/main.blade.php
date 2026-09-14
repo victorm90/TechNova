@@ -68,7 +68,9 @@
     <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
     <script src="{{ asset('assets/libs/lucide/umd/lucide.js') }}"></script>
+    <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/starcode.bundle.js') }}"></script>
+    @include('layouts.session-alert')
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
 

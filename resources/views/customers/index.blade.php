@@ -37,87 +37,15 @@
     </script>
 
     <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto" x-data="customerManager()">
-        {{-- HEADER --}}
-        <div class="flex flex-col gap-3 py-4 md:flex-row md:items-center print:hidden">
-            <div class="grow">
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center rounded-lg size-11 bg-custom-500/10">
-                        <i data-lucide="users" class="size-6 text-custom-500"></i>
-                    </div>
-                    <div>
-                        <h5 class="text-lg font-semibold text-slate-800 dark:text-zink-100">
-                            Clientes
-                        </h5>
-                        <p class="text-sm text-slate-500 dark:text-zink-300">
-                            Administración del directorio de clientes
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                <li class="relative pr-4 text-slate-400
-                       before:content-['\\ea54']
-                       before:font-remix
-                       before:absolute
-                       before:right-0
-                       before:text-[16px]
-                       before:top-0">
-                    <a href="{{ route('dashboard') }}" class="hover:text-custom-500">
-                        Dashboard
-                    </a>
-                </li>
-                <li class="font-medium text-slate-700 dark:text-zink-100">
-                    Clientes
-                </li>
-            </ul>
-        </div>
-
-        {{-- MENSAJE --}}
-        @if (session('success'))
-            <div
-                class="flex items-center gap-3 px-4 py-3 mb-5
-                    text-green-700 bg-green-50
-                    border border-green-200 rounded-lg
-                    dark:bg-green-500/10
-                    dark:text-green-300
-                    dark:border-green-500/20">
-
-                <i data-lucide="check-circle" class="size-5"></i>
-
-                <span class="text-sm font-medium">
-                    {{ session('success') }}
-                </span>
-
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="mb-5 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700 shadow-sm dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300"
-                role="alert">
-                <i data-lucide="circle-alert" class="mt-0.5 size-5 shrink-0"></i>
-                <div>
-                    <p class="font-semibold">No se pudo completar la operación</p>
-                    <p class="mt-1 text-sm">{{ session('error') }}</p>
-                </div>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200"
-                role="alert">
-                <div class="flex items-start gap-3">
-                    <i data-lucide="triangle-alert" class="mt-0.5 size-5 shrink-0"></i>
-                    <div>
-                        <p class="font-semibold">Revisa los datos del formulario</p>
-                        <ul class="mt-1 list-disc space-y-1 pl-5 text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        @endif
+        @include('layouts.page-header', [
+            'icon' => 'users',
+            'title' => 'Clientes',
+            'description' => 'Administración del directorio de clientes',
+            'breadcrumbs' => [
+                ['label' => 'Dashboard', 'url' => route('dashboard')],
+                ['label' => 'Clientes'],
+            ],
+        ])
 
         {{-- CARD --}}
         <div class="card overflow-hidden bg-white dark:bg-zink-700" id="customerList">
@@ -147,7 +75,6 @@
                                   top-1/2 -translate-y-1/2">
                             </i>
 
-
                             @if ($search)
                                 <a href="{{ route('customers.index') }}" title="Limpiar búsqueda"
                                     class="absolute flex items-center justify-center
@@ -163,18 +90,11 @@
 
                                 </a>
                             @endif
-
                         </form>
 
-
                         {{-- NUEVO --}}
-                           <button type="button" @click="openCreate()"
-                            class="inline-flex items-center justify-center
-                               whitespace-nowrap
-                               text-white btn
-                               bg-custom-500
-                               border-custom-500
-                               hover:bg-custom-600 sm:shrink-0">
+                        <button type="button" @click="openCreate()"
+                            class="inline-flex items-center justify-center whitespace-nowrap text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600 sm:shrink-0">
                             <i data-lucide="plus" class="size-4 me-1"></i>
                             Nuevo cliente
                         </button>
@@ -193,21 +113,12 @@
                             <col style="width: 16%">
                             <col style="width: 18%">
                             <col style="width: 12%">
-
                         </colgroup>
 
-
                         <thead>
-
                             <tr class="bg-slate-50 dark:bg-zink-600">
-
                                 <th
-                                    class="px-3 py-3 text-xs font-semibold
-                                       text-left uppercase
-                                       text-slate-500
-                                       border-b border-slate-200
-                                       dark:border-zink-500
-                                       dark:text-zink-200">
+                                    class="px-3 py-3 text-xs font-semibold text-left uppercase text-slate-500 border-b border-slate-200 dark:border-zink-500 dark:text-zink-200">
                                     Cliente
                                 </th>
 
