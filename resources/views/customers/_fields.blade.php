@@ -19,6 +19,8 @@
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"
             placeholder="Ej. Juan Pérez"
+            minlength="10"
+            maxlength="50"
             autocomplete="name"
             required>
     </div>
@@ -50,6 +52,9 @@
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"
             placeholder="Ej. 55555555"
+            inputmode="numeric"
+            pattern="[0-9]{8,12}"
+            maxlength="12"
             autocomplete="tel"
             required>
     </div>
@@ -80,6 +85,7 @@
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0 resize-none"
             placeholder="Escriba la dirección particular..."
+            maxlength="100"
             autocomplete="street-address"
             required>{{ old('address', $customer->address) }}</textarea>
     </div>
@@ -98,7 +104,7 @@
     </label>
 
     <div class="relative">
-        <i data-lucide="id-card"
+        <i data-lucide="contact"
             class="absolute size-4 text-slate-400 ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2">
         </i>
 
@@ -111,6 +117,9 @@
                    dark:border-zink-500 dark:bg-zink-700
                    focus:border-custom-500 focus:ring-0"
             placeholder="Ej. 90010112345"
+            inputmode="numeric"
+            pattern="[0-9]{11}"
+            maxlength="11"
             required>
     </div>
 

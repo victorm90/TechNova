@@ -4,20 +4,26 @@
 
 <head>
     <meta charset="utf-8">
-    <title> @yield('tutulo')</title>
+    <title>@yield('titulo', config('app.name'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="StarCode Kh" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     <!-- Layout config Js -->
-    <script src="{{ asset('assets/js/layout.js') }}"></script>
+    
     <!-- Icons CSS -->
 
     <!-- StarCode CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/starcode2.css') }}">
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
    
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
 </head>
 
 <body
@@ -54,25 +60,18 @@
     <!--customizer-->
     @include('layouts.customiser')
 
+    <script src="{{ asset('assets/js/layout.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src='{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}'></script>
-    <script src="{{ asset('assets/libs/%40popperjs/core/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/libs/tippy.js/tippy-bundle.umd.min.js') }}"></script>
     <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
     <script src="{{ asset('assets/libs/lucide/umd/lucide.js') }}"></script>
     <script src="{{ asset('assets/js/starcode.bundle.js') }}"></script>
-    <!--apexchart js-->
-    <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <!--dashboard ecommerce init js-->
-    <script src="{{ asset('assets/js/pages/dashboards-ecommerce.init.js') }}"></script>
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
-    <!-- vanila calendar -->
-    <script src="assets/libs/vanilla-calendar-pro/build/vanilla-calendar.min.js"></script>
-
-    <script src="assets/js/pages/dashboards-hr.init.js"></script>
-  
 </body>
 
 </html>

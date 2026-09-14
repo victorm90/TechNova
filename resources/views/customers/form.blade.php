@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('tutulo', $customer->exists ? 'Editar cliente' : 'Nuevo cliente')
+@section('titulo', $customer->exists ? 'Editar cliente' : 'Nuevo cliente')
 
 @section('contenido')
    

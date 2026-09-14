@@ -11,9 +11,9 @@ test('customers can be created, updated, viewed and deleted', function () {
         ->assertViewIs('customers.index');
 
     $this->post(route('customers.store'), [
-        'name' => 'Ana Perez',
+        'name' => 'Ana Maria Perez',
         'address' => 'Calle Principal 123',
-        'phone' => '555-1000',
+        'phone' => '55510000',
         'identity_card' => '11223344556',
     ])->assertRedirect(route('customers.index'));
 
@@ -21,12 +21,12 @@ test('customers can be created, updated, viewed and deleted', function () {
 
     $this->get(route('customers.show', $customer))
         ->assertOk()
-        ->assertSee('Ana Perez');
+        ->assertSee('Ana Maria Perez');
 
     $this->put(route('customers.update', $customer), [
         'name' => 'Ana Maria Perez',
         'address' => 'Avenida Central 456',
-        'phone' => '555-1001',
+        'phone' => '55510001',
         'identity_card' => '11223344556',
     ])->assertRedirect(route('customers.index'));
 
@@ -45,8 +45,39 @@ test('customer identity cards must be unique', function () {
         ->post(route('customers.store'), [
             'name' => 'Otro Cliente',
             'address' => 'Otra direccion',
-            'phone' => '555-2000',
+            'phone' => '55520000',
             'identity_card' => $customer->identity_card,
         ])
         ->assertSessionHasErrors('identity_card');
+});
+
+test('customer names and phones must be unique', function () {
+    $customer = Customer::factory()->create([
+        'name' => 'Cliente Registrado',
+        'phone' => '55550000',
+    ]);
+
+    $this->from(route('customers.index'))
+        ->post(route('customers.store'), [
+            'name' => $customer->name,
+            'address' => 'Otra direccion valida',
+            'phone' => $customer->phone,
+            'identity_card' => '12345678901',
+        ])
+        ->assertSessionHasErrors(['name', 'phone']);
+});
+
+test('customer fields enforce their required formats and lengths', function () {
+    $response = $this->from(route('customers.index'))
+        ->post(route('customers.store'), [
+            'name' => 'Corto',
+            'address' => str_repeat('A', 101),
+            'phone' => '1234ABCD',
+            'identity_card' => '1234567890',
+        ]);
+
+    $response->assertRedirect(route('customers.index'))
+        ->assertSessionHasErrors(['name', 'address', 'phone', 'identity_card']);
+
+    expect(Customer::query()->count())->toBe(0);
 });

@@ -18,9 +18,9 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->unique()->lexify('Cliente ??????'),
             'address' => fake()->address(),
-            'phone' => fake()->phoneNumber(),
+            'phone' => fake()->unique()->numerify('########'),
             'identity_card' => fake()->unique()->numerify('###########'),
         ];
     }
