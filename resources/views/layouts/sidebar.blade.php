@@ -12,18 +12,53 @@
             'route' => 'customers.index',
             'active' => request()->routeIs('customers.*'),
         ],
+        [
+            'label' => 'Productos',
+            'icon' => 'package',
+            'route' => 'productos.index',
+            'active' => request()->routeIs('productos.*'),
+        ],
+        [
+            'label' => 'Inventario',
+            'icon' => 'warehouse',
+            'route' => 'inventario.index',
+            'active' => request()->routeIs('inventario.*', 'entradas.*', 'salidas.*'),
+        ],
     ];
 
     $catalogItems = [];
 
+    if (auth()->user()?->can('manage-proveedores')) {
+        $catalogItems[] = [
+            'label' => 'Proveedores',
+            'icon' => 'truck',
+            'route' => 'proveedores.index',
+            'active' => request()->routeIs('proveedores.*'),
+        ];
+    }
+
+    if (auth()->user()?->can('manage-productos')) {
+        $catalogItems[] = [
+            'label' => 'Categorías',
+            'icon' => 'tags',
+            'route' => 'categorias.index',
+            'active' => request()->routeIs('categorias.*'),
+        ];
+
+        $catalogItems[] = [
+            'label' => 'Almacenes',
+            'icon' => 'building-2',
+            'route' => 'almacenes.index',
+            'active' => request()->routeIs('almacenes.*'),
+        ];
+    }
+
     if (auth()->user()?->can('manage-nomencladores')) {
-        $catalogItems = [
-            [
-                'label' => 'Servicios',
-                'icon' => 'briefcase',
-                'route' => 'servicios.index',
-                'active' => request()->routeIs('servicios.*'),
-            ],
+        $catalogItems[] = [
+            'label' => 'Servicios',
+            'icon' => 'briefcase',
+            'route' => 'servicios.index',
+            'active' => request()->routeIs('servicios.*'),
         ];
     }
 
