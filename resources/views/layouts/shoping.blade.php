@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
         <div class="grow">
             <h5 class="mb-0 text-16">Shopping Cart <span
-                    class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-custom-500 border-custom-500">3</span>
+                    class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-nova-500 border-nova-500">3</span>
             </h5>
         </div>
         <div class="shrink-0">
@@ -29,7 +29,7 @@
                                 class="transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-red-500 dark:hover:text-red-500"><i
                                     data-lucide="x" class="size-4"></i></button>
                         </div>
-                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-custom-500">
+                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-nova-500">
                             <h6 class="mb-1 text-15">Cotton collar t-shirts for men</h6>
                         </a>
                         <div class="flex items-center mb-3">
@@ -40,13 +40,13 @@
                         <div class="flex items-center justify-between gap-3">
                             <div class="inline-flex text-center input-step">
                                 <button type="button"
-                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="minus" class="inline-block size-4"></i></button>
                                 <input type="number"
                                     class="w-12 text-center h-9 border-y product-quantity dark:bg-zink-700 focus:shadow-none dark:border-zink-500"
                                     value="2" min="0" max="100" readonly="">
                                 <button type="button"
-                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="plus" class="inline-block size-4"></i></button>
                             </div>
                             <h6 class="product-line-price">310.64</h6>
@@ -64,7 +64,7 @@
                                 class="transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-red-500 dark:hover:text-red-500"><i
                                     data-lucide="x" class="size-4"></i></button>
                         </div>
-                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-custom-500">
+                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-nova-500">
                             <h6 class="mb-1 text-15">Like style travel black handbag</h6>
                         </a>
                         <div class="flex items-center mb-3">
@@ -75,13 +75,13 @@
                         <div class="flex items-center justify-between gap-3">
                             <div class="inline-flex text-center input-step">
                                 <button type="button"
-                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="minus" class="inline-block size-4"></i></button>
                                 <input type="number"
                                     class="w-12 text-center h-9 border-y product-quantity dark:bg-zink-700 focus:shadow-none dark:border-zink-500"
                                     value="1" min="0" max="100" readonly="">
                                 <button type="button"
-                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="plus" class="inline-block size-4"></i></button>
                             </div>
                             <h6 class="product-line-price">349.95</h6>
@@ -99,7 +99,7 @@
                                 class="transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-red-500 dark:hover:text-red-500"><i
                                     data-lucide="x" class="size-4"></i></button>
                         </div>
-                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-custom-500">
+                        <a href="#!" class="transition-all duration-200 ease-linear hover:text-nova-500">
                             <h6 class="mb-1 text-15">Blive Printed Men Round Neck</h6>
                         </a>
                         <div class="flex items-center mb-3">
@@ -110,13 +110,13 @@
                         <div class="flex items-center justify-between gap-3">
                             <div class="inline-flex text-center input-step">
                                 <button type="button"
-                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="border w-9 h-9 leading-[15px] minus bg-white dark:bg-zink-700 dark:border-zink-500 ltr:rounded-l rtl:rounded-r transition-all duration-200 ease-linear border-slate-200 text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="minus" class="inline-block size-4"></i></button>
                                 <input type="number"
                                     class="w-12 text-center h-9 border-y product-quantity dark:bg-zink-700 focus:shadow-none dark:border-zink-500"
                                     value="4" min="0" max="100" readonly="">
                                 <button type="button"
-                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-custom-500 dark:hover:bg-custom-500 hover:text-custom-50 dark:hover:text-custom-50 hover:border-custom-500 dark:hover:border-custom-500 focus:bg-custom-500 dark:focus:bg-custom-500 focus:border-custom-500 dark:focus:border-custom-500 focus:text-custom-50 dark:focus:text-custom-50"><i
+                                    class="transition-all duration-200 ease-linear bg-white border dark:bg-zink-700 dark:border-zink-500 ltr:rounded-r rtl:rounded-l w-9 h-9 border-slate-200 plus text-slate-500 dark:text-zink-200 hover:bg-nova-500 dark:hover:bg-nova-500 hover:text-nova-50 dark:hover:text-nova-50 hover:border-nova-500 dark:hover:border-nova-500 focus:bg-nova-500 dark:focus:bg-nova-500 focus:border-nova-500 dark:focus:border-nova-500 focus:text-nova-50 dark:focus:text-nova-50"><i
                                         data-lucide="plus" class="inline-block size-4"></i></button>
                             </div>
                             <h6 class="product-line-price end">2,186.96</h6>
@@ -156,7 +156,7 @@
                     class="w-full text-white btn bg-slate-500 border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100 dark:ring-slate-400/10">Continue
                     Shopping</a>
                 <a href="apps-ecommerce-checkout.html"
-                    class="w-full text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">Checkout</a>
+                    class="w-full text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-nova-400/20">Checkout</a>
             </div>
         </div>
     </div>

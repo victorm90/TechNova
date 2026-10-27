@@ -41,6 +41,7 @@
             'icon' => 'users',
             'title' => 'Clientes',
             'description' => 'Administración del directorio de clientes',
+            'accent' => 'green',
             'breadcrumbs' => [
                 ['label' => 'Dashboard', 'url' => route('dashboard')],
                 ['label' => 'Clientes'],
@@ -48,53 +49,30 @@
         ])
 
         {{-- CARD --}}
-        <div class="card overflow-hidden bg-white dark:bg-zink-700" id="customerList">
+        <div class="nova-table-card card overflow-hidden bg-white dark:bg-zink-700" id="customerList" data-table-card>
+            <div class="nova-progress-bar h-1 w-full"></div>
+
             {{-- CABECERA --}}
             <div class="px-5 py-4 border-b border-slate-200 dark:border-zink-500">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="whitespace-nowrap text-sm font-semibold text-slate-700 dark:text-zink-100">
+                            Listado de clientes
+                        </span>
+                        <span aria-live="polite"
+                            class="inline-flex items-center rounded-full bg-nova-50 px-2.5 py-0.5 text-xs font-medium text-nova-700 dark:bg-nova-500/15 dark:text-nova-300">
+                            {{ $customers->total() }}
+                        </span>
+                    </div>
+
                     {{-- BUSCADOR + CREAR --}}
-                    <div class="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
-
-                        {{-- BUSCADOR --}}
-                        <form method="GET" action="{{ route('customers.index') }}" class="relative w-full sm:w-auto">
-
-                            <input type="text" name="search" value="{{ $search }}"
-                                class="w-full sm:w-72 ltr:pl-10 rtl:pr-10
-                                   ltr:pr-9 rtl:pl-9
-                                   form-input
-                                   border-slate-200
-                                   dark:border-zink-500
-                                   dark:bg-zink-700
-                                   focus:border-custom-500
-                                   focus:ring-0"
-                                placeholder="Buscar cliente..." autocomplete="off">
-
-                            <i data-lucide="search"
-                                class="absolute size-4 text-slate-400
-                                  ltr:left-3 rtl:right-3
-                                  top-1/2 -translate-y-1/2">
-                            </i>
-
-                            @if ($search)
-                                <a href="{{ route('customers.index') }}" title="Limpiar búsqueda"
-                                    class="absolute flex items-center justify-center
-                                       size-6 rounded
-                                       text-slate-400
-                                       ltr:right-2 rtl:left-2
-                                       top-1/2 -translate-y-1/2
-                                       hover:bg-slate-100
-                                       hover:text-slate-600
-                                       dark:hover:bg-zink-600">
-
-                                    <i data-lucide="x" class="size-4"></i>
-
-                                </a>
-                            @endif
-                        </form>
+                    <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+                        <x-table-search :action="route('customers.index')" :search="$search"
+                            placeholder="Buscar cliente..." id="customer-search" />
 
                         {{-- NUEVO --}}
                         <button type="button" @click="openCreate()"
-                            class="inline-flex items-center justify-center whitespace-nowrap text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600 sm:shrink-0">
+                            class="inline-flex items-center justify-center whitespace-nowrap text-white btn bg-nova-500 border-nova-500 hover:bg-nova-600 sm:shrink-0">
                             <i data-lucide="plus" class="size-4 me-1"></i>
                             Nuevo cliente
                         </button>
@@ -102,10 +80,12 @@
                 </div>
             </div>
 
+            <x-table-loading />
+
             {{-- TABLA --}}
             <div class="card-body">
-                <div class="w-full overflow-x-auto">
-                    <table class="w-full table-fixed">
+                <div class="nova-table-scroll w-full">
+                    <table class="nova-table w-full table-fixed">
                         {{-- ANCHOS FIJOS --}}
                         <colgroup>
                             <col style="width: 24%">
@@ -181,9 +161,9 @@
 
                                             <div
                                                 class="flex items-center justify-center
-                                                    rounded-full size-9 shrink-0
-                                                    bg-custom-500/10
-                                                    text-custom-500
+                                                    rounded-xl size-9 shrink-0
+                                                    bg-gradient-to-br from-emerald-100 to-sky-100
+                                                    text-nova-700
                                                     font-semibold">
 
                                                 {{ strtoupper(mb_substr($customer->name, 0, 1)) }}
@@ -266,10 +246,10 @@
                                                px-2 py-1
                                                text-xs font-medium
                                                rounded-md
-                                               bg-slate-100
-                                               text-slate-600
-                                               dark:bg-zink-600
-                                               dark:text-zink-200"
+                                               bg-amber-50
+                                               text-amber-700
+                                               dark:bg-amber-500/15
+                                               dark:text-amber-300"
                                             title="{{ $customer->identity_card }}">
 
                                             <i data-lucide="contact" class="size-3.5 shrink-0">
@@ -298,8 +278,8 @@
                                                    rounded-lg
                                                    border border-slate-200
                                                    text-slate-500
-                                                   hover:text-custom-500
-                                                   hover:border-custom-500
+                                                   hover:text-nova-500
+                                                   hover:border-nova-500
                                                    dark:border-zink-500">
 
                                                 <i data-lucide="eye" class="size-4"></i>
@@ -320,12 +300,12 @@
                                                 class="inline-flex items-center justify-center
                                                     size-8 shrink-0
                                                                                 rounded-lg
-                                                                            border border-blue-200
-                                                        bg-blue-50 text-blue-600
-                                                        transition hover:bg-blue-100 hover:text-blue-700
-                                                        dark:border-blue-900/50
-                                                        dark:bg-blue-900/20 dark:text-blue-400
-                                                                dark:hover:bg-blue-900/40">
+                                                                            border border-sky-200
+                                                        bg-sky-50 text-sky-600
+                                                        transition hover:bg-sky-100 hover:text-sky-700
+                                                        dark:border-sky-900/50
+                                                        dark:bg-sky-900/20 dark:text-sky-400
+                                                                dark:hover:bg-sky-900/40">
                                                 <i data-lucide="pencil" class="size-4"></i>
                                             </button>
 
@@ -368,36 +348,23 @@
                             @empty
 
                                 <tr>
-                                    <td colspan="5" class="px-6 py-16 text-center">
-                                        <div class="flex flex-col items-center">
-                                            <div
-                                                class="flex items-center justify-center
-                                                    size-14 rounded-full
-                                                    bg-slate-100
-                                                    dark:bg-zink-600">
-
-                                                <i data-lucide="users" class="size-7 text-slate-400">
-                                                </i>
-                                            </div>
-                                            <h6
-                                                class="mt-4 font-semibold
-                                                   text-slate-700
-                                                   dark:text-zink-100">
-
-                                                {{ $search ? 'No se encontraron clientes' : 'No hay clientes registrados' }}
-                                            </h6>
-                                            <p
-                                                class="mt-1 text-sm text-slate-500
-                                                  dark:text-zink-300">
-
-                                                @if ($search)
-                                                    No encontramos resultados para
-                                                    "{{ $search }}".
-                                                @else
-                                                    Comienza agregando tu primer cliente.
-                                                @endif
-                                            </p>
-                                        </div>
+                                    <td colspan="5">
+                                        <x-table-empty icon="users"
+                                            :title="$search ? 'Sin resultados' : 'No hay clientes registrados'"
+                                            :message="$search ? 'No encontramos coincidencias para “'.$search.'”.' : 'Comienza agregando tu primer cliente al directorio.'">
+                                            @if ($search)
+                                                <a href="{{ route('customers.index') }}"
+                                                    class="text-sm font-medium text-nova-600 hover:text-nova-700">
+                                                    Limpiar búsqueda
+                                                </a>
+                                            @else
+                                                <button type="button" @click="openCreate()"
+                                                    class="btn border-nova-500 bg-nova-500 text-white hover:bg-nova-600">
+                                                    <i data-lucide="user-plus" class="me-1.5 inline-block size-4"></i>
+                                                    Nuevo cliente
+                                                </button>
+                                            @endif
+                                        </x-table-empty>
                                     </td>
                                 </tr>
                             @endforelse
@@ -406,42 +373,7 @@
                 </div>
 
                 {{-- PAGINACION --}}
-                @if ($customers->total() > 0)
-                    <div
-                        class="flex flex-col gap-3 pt-5 mt-5
-                            border-t border-slate-200
-                            dark:border-zink-500
-                            sm:flex-row sm:items-center
-                            sm:justify-between">
-
-                        <div class="text-sm text-slate-500 dark:text-zink-300">
-
-                            Mostrando
-
-                            <span class="font-medium text-slate-700 dark:text-zink-100">
-                                {{ $customers->firstItem() }}
-                            </span>
-
-                            -
-
-                            <span class="font-medium text-slate-700 dark:text-zink-100">
-                                {{ $customers->lastItem() }}
-                            </span>
-
-                            de
-
-                            <span class="font-medium text-slate-700 dark:text-zink-100">
-                                {{ $customers->total() }}
-                            </span>
-
-                        </div>
-
-                        <div>
-                            {{ $customers->appends(request()->query())->links('pagination.custom') }}
-                        </div>
-
-                    </div>
-                @endif
+                <x-table-pagination :paginator="$customers" label="clientes" />
             </div>
         </div>
 
@@ -453,7 +385,9 @@
         <div x-show="modal === 'create'" x-cloak class="fixed inset-0 overflow-y-auto" style="z-index:1050"
             role="dialog" aria-modal="true">
 
-            <div class="flex items-start justify-center min-h-full
+            <div class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm" @click="close()" aria-hidden="true"></div>
+
+            <div class="relative flex items-start justify-center min-h-full
                    px-4 pt-16 pb-8 md:pt-20">
 
                 <div @click.outside="close()"
@@ -471,9 +405,9 @@
 
                             <div
                                 class="flex items-center justify-center
-                                    size-10 rounded-lg bg-custom-500/10">
+                                    size-10 rounded-lg bg-nova-500/10">
 
-                                <i data-lucide="user-plus" class="size-5 text-custom-500">
+                                <i data-lucide="user-plus" class="size-5 text-nova-500">
                                 </i>
 
                             </div>
@@ -482,7 +416,7 @@
 
                                 <p
                                     class="text-xs font-semibold tracking-wider
-                                      text-custom-500 uppercase">
+                                      text-nova-500 uppercase">
                                     Directorio
                                 </p>
 
@@ -534,8 +468,8 @@
                             </button>
 
                             <button type="submit"
-                                class="text-white btn bg-custom-500
-                                   border-custom-500 hover:bg-custom-600">
+                                class="text-white btn bg-nova-500
+                                   border-nova-500 hover:bg-nova-600">
 
                                 <i data-lucide="save" class="size-4 me-1"></i>
 
@@ -561,7 +495,9 @@
         <div x-show="modal === 'edit'" x-cloak class="fixed inset-0 overflow-y-auto" style="z-index:1050" role="dialog"
             aria-modal="true">
 
-            <div class="flex items-start justify-center min-h-full
+            <div class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm" @click="close()" aria-hidden="true"></div>
+
+            <div class="relative flex items-start justify-center min-h-full
                    px-4 pt-16 pb-8 md:pt-20">
 
                 <div @click.outside="close()"
@@ -580,9 +516,9 @@
 
                             <div
                                 class="flex items-center justify-center
-                                    size-10 rounded-lg bg-blue-500/10">
+                                    size-10 rounded-lg bg-sky-500/10">
 
-                                <i data-lucide="user-cog" class="size-5 text-blue-500">
+                                <i data-lucide="user-cog" class="size-5 text-sky-500">
                                 </i>
 
                             </div>
@@ -591,7 +527,7 @@
 
                                 <p
                                     class="text-xs font-semibold tracking-wider
-                                      text-blue-500 uppercase">
+                                      text-sky-500 uppercase">
                                     Directorio
                                 </p>
 
@@ -651,7 +587,7 @@
                                        border-slate-200
                                        dark:border-zink-500
                                        dark:bg-zink-700
-                                       focus:border-custom-500"
+                                       focus:border-nova-500"
                                                 minlength="10" maxlength="50"
                                     required>
 
@@ -686,7 +622,7 @@
                                        border-slate-200
                                        dark:border-zink-500
                                        dark:bg-zink-700
-                                       focus:border-custom-500"
+                                       focus:border-nova-500"
                                                 inputmode="numeric" pattern="[0-9]{8,12}" maxlength="12"
                                     required>
 
@@ -718,7 +654,7 @@
                                        border-slate-200
                                        dark:border-zink-500
                                        dark:bg-zink-700
-                                       focus:border-custom-500 resize-none"
+                                       focus:border-nova-500 resize-none"
                                                 maxlength="100"
                                     required></textarea>
 
@@ -751,7 +687,7 @@
                                        border-slate-200
                                        dark:border-zink-500
                                        dark:bg-zink-700
-                                       focus:border-custom-500"
+                                       focus:border-nova-500"
                                                 inputmode="numeric" pattern="[0-9]{11}" maxlength="11"
                                     required>
 
@@ -776,8 +712,8 @@
                             </button>
 
                             <button type="submit"
-                                class="text-white btn bg-custom-500
-                                   border-custom-500 hover:bg-custom-600">
+                                class="text-white btn bg-nova-500
+                                   border-nova-500 hover:bg-nova-600">
 
                                 <i data-lucide="save" class="size-4 me-1"></i>
 
@@ -904,20 +840,25 @@
 
                         </button>
 
-                        <button type="button" @click="deleteCustomerConfirmed()"
-                            class="inline-flex items-center
-                           btn
-                           border-red-500
-                           bg-red-500
-                           text-white
-                           shadow-sm
-                           hover:bg-red-600">
+                        <form method="POST" :action="deleteCustomer.url">
+                            @csrf
+                            @method('DELETE')
 
-                            <i data-lucide="trash-2" class="size-4 me-1.5"></i>
+                            <button type="submit"
+                                class="inline-flex items-center
+                               btn
+                               border-red-500
+                               bg-red-500
+                               text-white
+                               shadow-sm
+                               hover:bg-red-600">
 
-                            Eliminar cliente
+                                <i data-lucide="trash-2" class="size-4 me-1.5"></i>
 
-                        </button>
+                                Eliminar cliente
+
+                            </button>
+                        </form>
 
                     </div>
 
@@ -1091,42 +1032,6 @@
                     };
 
                     this.updateBodyScroll();
-                },
-
-                /* ================================================= */
-                /* ELIMINAR */
-                /* ================================================= */
-
-                deleteCustomerConfirmed() {
-
-                    if (!this.deleteCustomer.url) {
-                        return;
-                    }
-
-                    const form = document.createElement('form');
-
-                    form.method = 'POST';
-                    form.action = this.deleteCustomer.url;
-
-                    const csrf = document.createElement('input');
-
-                    csrf.type = 'hidden';
-                    csrf.name = '_token';
-                    csrf.value =
-                        document.querySelector('meta[name="csrf-token"]')?.content ?? '';
-
-                    const method = document.createElement('input');
-
-                    method.type = 'hidden';
-                    method.name = '_method';
-                    method.value = 'DELETE';
-
-                    form.appendChild(csrf);
-                    form.appendChild(method);
-
-                    document.body.appendChild(form);
-
-                    form.submit();
                 },
 
                 /* ================================================= */

@@ -23,7 +23,7 @@
             @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
-                   focus:border-custom-500 focus:ring-0"
+                   focus:border-nova-500 focus:ring-0"
             placeholder="Ej. Juan Pérez"
             minlength="10"
             maxlength="50"
@@ -60,7 +60,7 @@
             @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
-                   focus:border-custom-500 focus:ring-0"
+                   focus:border-nova-500 focus:ring-0"
             placeholder="Ej. 55555555"
             inputmode="numeric"
             pattern="[0-9]{8,12}"
@@ -96,7 +96,7 @@
             @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
-                   focus:border-custom-500 focus:ring-0 resize-none"
+                   focus:border-nova-500 focus:ring-0 resize-none"
             placeholder="Escriba la dirección particular..."
             maxlength="100"
             autocomplete="street-address"
@@ -132,7 +132,7 @@
             @endif
             class="ltr:pl-10 rtl:pr-10 form-input w-full border-slate-200
                    dark:border-zink-500 dark:bg-zink-700
-                   focus:border-custom-500 focus:ring-0"
+                   focus:border-nova-500 focus:ring-0"
             placeholder="Ej. 90010112345"
             inputmode="numeric"
             pattern="[0-9]{11}"

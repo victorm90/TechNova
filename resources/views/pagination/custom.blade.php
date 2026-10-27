@@ -32,9 +32,9 @@
                            border border-slate-200
                            text-slate-500
                            transition
-                           hover:border-custom-500
-                           hover:text-custom-500
-                           hover:bg-custom-500/5
+                           hover:border-nova-500
+                           hover:text-nova-500
+                           hover:bg-nova-500/5
                            dark:border-zink-500
                            dark:text-zink-200">
 
@@ -80,8 +80,8 @@
                                        size-9 rounded-lg
                                        text-sm font-medium
                                        text-white
-                                       bg-custom-500
-                                       border border-custom-500">
+                                       bg-gradient-to-r from-nova-500 to-emerald-500
+                                       shadow-sm">
 
                                 {{ $page }}
 
@@ -96,9 +96,9 @@
                                        border border-transparent
                                        text-sm text-slate-500
                                        transition
-                                       hover:border-slate-200
-                                       hover:bg-slate-50
-                                       hover:text-custom-500
+                                       hover:border-nova-100
+                                       hover:bg-nova-50
+                                       hover:text-nova-700
                                        dark:text-zink-200
                                        dark:hover:border-zink-500
                                        dark:hover:bg-zink-600">
@@ -131,9 +131,9 @@
                            border border-slate-200
                            text-slate-500
                            transition
-                           hover:border-custom-500
-                           hover:text-custom-500
-                           hover:bg-custom-500/5
+                           hover:border-nova-500
+                           hover:text-nova-500
+                           hover:bg-nova-500/5
                            dark:border-zink-500
                            dark:text-zink-200">
 

@@ -7,48 +7,46 @@
     <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
 
         {{-- HEADER --}}
-        <div class="flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
+        <div class="nova-hero mb-5">
+            <div class="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <nav class="nova-breadcrumb mb-1.5" aria-label="Ruta de navegación">
+                        <a href="{{ route('customers.index') }}">Clientes</a>
 
-            <div>
-                <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-zink-300">
-                    <a href="{{ route('customers.index') }}"
-                        class="transition-colors hover:text-custom-500">
-                        Clientes
-                    </a>
+                        <i data-lucide="chevron-right" class="size-3 text-slate-300 dark:text-zink-500"></i>
 
-                    <i data-lucide="chevron-right" class="size-4"></i>
+                        <span class="font-medium text-slate-500 dark:text-zink-300">Detalle</span>
+                    </nav>
 
-                    <span>Detalle</span>
+                    <h1 class="text-xl font-semibold text-slate-800 sm:text-2xl dark:text-zink-100">
+                        Información del cliente
+                    </h1>
+
+                    <p class="mt-1 text-sm text-slate-500 dark:text-zink-300">
+                        Datos de contacto y perfil del cliente
+                    </p>
                 </div>
 
-                <h4 class="mt-1 text-xl font-semibold text-slate-800 dark:text-zink-100">
-                    Información del cliente
-                </h4>
-            </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    {{-- VOLVER --}}
+                    <a href="{{ route('customers.index') }}"
+                        class="inline-flex items-center gap-2 btn border-slate-200 bg-white text-slate-600 shadow-sm
+                               hover:border-slate-300 hover:text-nova-500
+                               dark:border-zink-500 dark:bg-zink-700 dark:text-zink-200">
+                        <i data-lucide="arrow-left" class="size-4"></i>
+                        <span>Volver</span>
+                    </a>
 
-            <div class="flex flex-wrap items-center gap-2">
-
-                {{-- VOLVER --}}
-                <a href="{{ route('customers.index') }}"
-                    class="inline-flex items-center gap-2 btn border-slate-200 bg-white text-slate-600 shadow-sm
-                           hover:border-slate-300 hover:text-custom-500
-                           dark:border-zink-500 dark:bg-zink-700 dark:text-zink-200">
-                    <i data-lucide="arrow-left" class="size-4"></i>
-                    <span>Volver</span>
-                </a>
-
-                {{-- EDITAR --}}
-                <a href="{{ route('customers.edit', $customer) }}"
-                    class="inline-flex items-center gap-2 btn bg-custom-500 border-custom-500 text-white shadow-sm
-                           hover:bg-custom-600 hover:border-custom-600">
-                    <i data-lucide="pencil" class="size-4"></i>
-                    <span>Editar cliente</span>
-                </a>
-
+                    {{-- EDITAR --}}
+                    <a href="{{ route('customers.edit', $customer) }}"
+                        class="inline-flex items-center gap-2 btn bg-nova-500 border-nova-500 text-white shadow-sm
+                               hover:bg-nova-600 hover:border-nova-600">
+                        <i data-lucide="pencil" class="size-4"></i>
+                        <span>Editar cliente</span>
+                    </a>
+                </div>
             </div>
         </div>
-
-
         {{-- PERFIL DEL CLIENTE --}}
         <div class="mb-5 card border-0 shadow-sm dark:border-zink-600">
 
@@ -57,7 +55,7 @@
                 <div class="relative overflow-hidden rounded-xl">
 
                     {{-- DECORACIÓN --}}
-                    <div class="absolute inset-x-0 top-0 h-28 bg-custom-500/10 dark:bg-custom-500/5"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-nova-500/10 dark:bg-nova-500/5"></div>
 
                     <div class="relative px-5 pb-5 pt-7 sm:px-7">
 
@@ -68,7 +66,7 @@
 
                                 {{-- AVATAR --}}
                                 <div class="flex size-20 shrink-0 items-center justify-center rounded-2xl
-                                            bg-custom-500 text-2xl font-bold text-white shadow-lg
+                                            bg-gradient-to-br from-emerald-400 via-nova-400 to-sky-400 text-2xl font-bold text-white shadow-lg
                                             ring-4 ring-white dark:ring-zink-700">
 
                                     {{ strtoupper(substr($customer->name, 0, 1)) }}
@@ -84,9 +82,9 @@
                                         </h3>
 
                                         <span class="inline-flex items-center gap-1 rounded-full
-                                                     bg-green-100 px-2.5 py-1 text-xs font-medium
-                                                     text-green-600 dark:bg-green-500/10 dark:text-green-400">
-                                            <span class="size-1.5 rounded-full bg-green-500"></span>
+                                                     bg-emerald-50 px-2.5 py-1 text-xs font-medium
+                                                     text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                                            <span class="size-1.5 rounded-full bg-emerald-500"></span>
                                             Cliente
                                         </span>
 
@@ -134,7 +132,7 @@
                     <div class="flex items-center gap-4">
 
                         <div class="flex size-12 shrink-0 items-center justify-center rounded-xl
-                                    bg-blue-500/10 text-blue-500">
+                                    bg-sky-50 text-sky-600">
                             <i data-lucide="phone" class="size-6"></i>
                         </div>
 
@@ -161,7 +159,7 @@
                     <div class="flex items-center gap-4">
 
                         <div class="flex size-12 shrink-0 items-center justify-center rounded-xl
-                                    bg-amber-500/10 text-amber-500">
+                                    bg-amber-50 text-amber-600">
                             <i data-lucide="map-pin" class="size-6"></i>
                         </div>
 
@@ -188,7 +186,7 @@
                     <div class="flex items-center gap-4">
 
                         <div class="flex size-12 shrink-0 items-center justify-center rounded-xl
-                                    bg-purple-500/10 text-purple-500">
+                                    bg-nova-50 text-nova-600">
                             <i data-lucide="badge-check" class="size-6"></i>
                         </div>
 
@@ -224,7 +222,7 @@
                         <div class="flex items-center gap-3">
 
                             <div class="flex size-10 items-center justify-center rounded-lg
-                                        bg-custom-500/10 text-custom-500">
+                                        bg-nova-500/10 text-nova-500">
                                 <i data-lucide="user-round" class="size-5"></i>
                             </div>
 
@@ -252,7 +250,7 @@
                             <div>
                                 <div class="mb-2 flex items-center gap-2">
 
-                                    <i data-lucide="user" class="size-4 text-custom-500"></i>
+                                    <i data-lucide="user" class="size-4 text-nova-500"></i>
 
                                     <span class="text-xs font-medium uppercase tracking-wide
                                                  text-slate-400 dark:text-zink-400">
@@ -271,7 +269,7 @@
                             <div>
                                 <div class="mb-2 flex items-center gap-2">
 
-                                    <i data-lucide="phone" class="size-4 text-custom-500"></i>
+                                    <i data-lucide="phone" class="size-4 text-nova-500"></i>
 
                                     <span class="text-xs font-medium uppercase tracking-wide
                                                  text-slate-400 dark:text-zink-400">
@@ -290,7 +288,7 @@
                             <div>
                                 <div class="mb-2 flex items-center gap-2">
 
-                                    <i data-lucide="credit-card" class="size-4 text-custom-500"></i>
+                                    <i data-lucide="credit-card" class="size-4 text-nova-500"></i>
 
                                     <span class="text-xs font-medium uppercase tracking-wide
                                                  text-slate-400 dark:text-zink-400">
@@ -310,7 +308,7 @@
 
                                 <div class="mb-2 flex items-center gap-2">
 
-                                    <i data-lucide="map-pin" class="size-4 text-custom-500"></i>
+                                    <i data-lucide="map-pin" class="size-4 text-nova-500"></i>
 
                                     <span class="text-xs font-medium uppercase tracking-wide
                                                  text-slate-400 dark:text-zink-400">
@@ -381,13 +379,13 @@
                             <a href="{{ route('customers.edit', $customer) }}"
                                 class="flex w-full items-center justify-between rounded-lg border
                                        border-slate-200 px-4 py-3 transition-all
-                                       hover:border-custom-300 hover:bg-custom-50
-                                       dark:border-zink-500 dark:hover:bg-custom-500/10">
+                                       hover:border-nova-300 hover:bg-nova-50
+                                       dark:border-zink-500 dark:hover:bg-nova-500/10">
 
                                 <div class="flex items-center gap-3">
 
                                     <div class="flex size-9 items-center justify-center rounded-lg
-                                                bg-custom-500/10 text-custom-500">
+                                                bg-nova-500/10 text-nova-500">
 
                                         <i data-lucide="pencil" class="size-4"></i>
 
@@ -497,9 +495,9 @@
                     <div class="flex items-center gap-3">
 
                         <div class="flex size-10 items-center justify-center rounded-lg
-                                    bg-blue-500/10 text-blue-500">
+                                    bg-sky-50 text-sky-600">
 
-                            <i data-lucide="briefcase-business" class="size-5"></i>
+                            <i data-lucide="briefcase" class="size-5"></i>
 
                         </div>
 

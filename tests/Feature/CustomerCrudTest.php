@@ -1,11 +1,14 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 test('customers can be created, updated, viewed and deleted', function () {
+    $this->actingAs(User::factory()->create());
+
     $this->get(route('customers.index'))
         ->assertOk()
         ->assertViewIs('customers.index');
@@ -39,6 +42,8 @@ test('customers can be created, updated, viewed and deleted', function () {
 });
 
 test('customer identity cards must be unique', function () {
+    $this->actingAs(User::factory()->create());
+
     $customer = Customer::factory()->create(['identity_card' => '11223344556']);
 
     $this->from(route('customers.create'))
@@ -52,6 +57,8 @@ test('customer identity cards must be unique', function () {
 });
 
 test('customer names and phones must be unique', function () {
+    $this->actingAs(User::factory()->create());
+
     $customer = Customer::factory()->create([
         'name' => 'Cliente Registrado',
         'phone' => '55550000',
@@ -68,6 +75,8 @@ test('customer names and phones must be unique', function () {
 });
 
 test('customer fields enforce their required formats and lengths', function () {
+    $this->actingAs(User::factory()->create());
+
     $response = $this->from(route('customers.index'))
         ->post(route('customers.store'), [
             'name' => 'Corto',

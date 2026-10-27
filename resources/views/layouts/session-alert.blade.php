@@ -50,7 +50,7 @@
             showCloseButton: !toast,
             confirmButtonText: 'Entendido',
             customClass: {
-                confirmButton: 'text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600 hover:border-custom-600',
+                confirmButton: 'text-white btn bg-nova-500 border-nova-500 hover:bg-nova-600 hover:border-nova-600',
             },
             buttonsStyling: false,
         });

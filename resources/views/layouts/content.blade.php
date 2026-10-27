@@ -286,7 +286,7 @@
                         provides your e-commerce team with a clear overview of key financial and
                         website KPIs at any time.</p>
                     <button type="button"
-                        class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-500/20 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-500/20 dark:ring-custom-400/20">Take
+                        class="text-white btn bg-nova-500 border-nova-500 hover:text-white hover:bg-nova-600 hover:border-nova-600 focus:text-white focus:bg-nova-600 focus:border-nova-600 focus:ring focus:ring-nova-500/20 active:text-white active:bg-nova-600 active:border-nova-600 active:ring active:ring-nova-500/20 dark:ring-nova-400/20">Take
                         a Product</button>
                 </div>
                 <div class="hidden col-span-12 2xl:col-span-3 lg:col-span-2 lg:col-start-11 2xl:col-start-10 lg:block">
@@ -302,7 +302,7 @@
                 <h6 class="grow text-15">Order Statistics</h6>
                 <div class="relative">
                     <a href="#!"
-                        class="underline transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">View
+                        class="underline transition-all duration-200 ease-linear text-nova-500 hover:text-nova-600">View
                         All <i data-lucide="move-right"
                             class="inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"></i></a>
                 </div>
@@ -314,7 +314,7 @@
     <div class="col-span-12 card md:col-span-6 lg:col-span-3 2xl:col-span-2">
         <div class="text-center card-body">
             <div
-                class="flex items-center justify-center mx-auto rounded-full size-14 bg-custom-100 text-custom-500 dark:bg-custom-500/20">
+                class="flex items-center justify-center mx-auto rounded-full size-14 bg-nova-100 text-nova-500 dark:bg-nova-500/20">
                 <i data-lucide="wallet-2"></i>
             </div>
             <h5 class="mt-4 mb-2">$<span class="counter-value" data-target="236.18">0</span>k</h5>
@@ -359,7 +359,7 @@
                     <i data-lucide="calendar-range"
                         class="absolute size-4 ltr:left-3 rtl:right-3 top-3 text-slate-500 dark:text-zink-200"></i>
                     <input type="text"
-                        class="ltr:pl-10 rtl:pr-10 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                        class="ltr:pl-10 rtl:pr-10 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-nova-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-nova-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                         data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true"
                         readonly="readonly" placeholder="Select Date">
                 </div>
@@ -391,7 +391,7 @@
                 </div>
             </div>
             <div id="salesRevenueOverview" class="apex-charts"
-                data-chart-colors='["bg-custom-500", "bg-custom-400", "bg-custom-300"]' dir="ltr">
+                data-chart-colors='["bg-nova-500", "bg-nova-400", "bg-nova-300"]' dir="ltr">
             </div>
         </div>
     </div><!--end col-->
@@ -403,7 +403,7 @@
                         <h6 class="grow text-15">Traffic Resources</h6>
                         <div class="relative">
                             <a href="#!"
-                                class="transition-all duration-300 ease-linear text-custom-500 hover:text-custom-700">View
+                                class="transition-all duration-300 ease-linear text-nova-500 hover:text-nova-700">View
                                 Status <i data-lucide="move-right"
                                     class="inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"></i></a>
                         </div>
@@ -447,10 +447,10 @@
                     <div>
                         <div class="flex items-center justify-between mt-5 mb-2">
                             <p class="text-slate-500 dark:text-zink-200">Total Orders</p>
-                            <h6 class="mb-0 text-custom-500">85%</h6>
+                            <h6 class="mb-0 text-nova-500">85%</h6>
                         </div>
                         <div class="w-full bg-slate-200 rounded-full h-2.54 dark:bg-zink-600">
-                            <div class="bg-custom-500 h-2.5 rounded-full" style="width: 85%"></div>
+                            <div class="bg-nova-500 h-2.5 rounded-full" style="width: 85%"></div>
                         </div>
                     </div>
                 </div>
@@ -467,13 +467,13 @@
                     <div class="flex gap-3">
                         <div class="relative grow">
                             <input type="text"
-                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                                class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-nova-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-nova-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                 placeholder="Search for ..." autocomplete="off">
                             <i data-lucide="search"
                                 class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>
                         </div>
                         <button type="button"
-                            class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i
+                            class="text-white btn bg-nova-500 border-nova-500 hover:text-white hover:bg-nova-600 hover:border-nova-600 focus:text-white focus:bg-nova-600 focus:border-nova-600 focus:ring focus:ring-nova-100 active:text-white active:bg-nova-600 active:border-nova-600 active:ring active:ring-nova-100 dark:ring-nova-400/20"><i
                                 class="align-baseline ltr:pr-1 rtl:pl-1 ri-download-2-line"></i>
                             Export</button>
                     </div>
@@ -987,25 +987,25 @@
                 <ul class="flex flex-wrap items-center gap-2 shrink-0">
                     <li>
                         <a href="#!"
-                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto"><i
+                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-nova-500 dark:hover:text-nova-500 hover:bg-nova-50 dark:hover:bg-nova-500/10 focus:bg-nova-50 dark:focus:bg-nova-500/10 focus:text-nova-500 dark:focus:text-nova-500 [&.active]:text-nova-500 dark:[&.active]:text-nova-500 [&.active]:bg-nova-50 dark:[&.active]:bg-nova-500/10 [&.active]:border-nova-50 dark:[&.active]:border-nova-500/10 [&.active]:hover:text-nova-700 dark:[&.active]:hover:text-nova-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto"><i
                                 class="mr-1 size-4 rtl:rotate-180" data-lucide="chevron-left"></i>
                             Prev</a>
                     </li>
                     <li>
                         <a href="#!"
-                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">1</a>
+                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-nova-500 dark:hover:text-nova-500 hover:bg-nova-50 dark:hover:bg-nova-500/10 focus:bg-nova-50 dark:focus:bg-nova-500/10 focus:text-nova-500 dark:focus:text-nova-500 [&.active]:text-nova-500 dark:[&.active]:text-nova-500 [&.active]:bg-nova-50 dark:[&.active]:bg-nova-500/10 [&.active]:border-nova-50 dark:[&.active]:border-nova-500/10 [&.active]:hover:text-nova-700 dark:[&.active]:hover:text-nova-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">1</a>
                     </li>
                     <li>
                         <a href="#!"
-                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto active">2</a>
+                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-nova-500 dark:hover:text-nova-500 hover:bg-nova-50 dark:hover:bg-nova-500/10 focus:bg-nova-50 dark:focus:bg-nova-500/10 focus:text-nova-500 dark:focus:text-nova-500 [&.active]:text-nova-500 dark:[&.active]:text-nova-500 [&.active]:bg-nova-50 dark:[&.active]:bg-nova-500/10 [&.active]:border-nova-50 dark:[&.active]:border-nova-500/10 [&.active]:hover:text-nova-700 dark:[&.active]:hover:text-nova-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto active">2</a>
                     </li>
                     <li>
                         <a href="#!"
-                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">3</a>
+                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 w-8 h-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-nova-500 dark:hover:text-nova-500 hover:bg-nova-50 dark:hover:bg-nova-500/10 focus:bg-nova-50 dark:focus:bg-nova-500/10 focus:text-nova-500 dark:focus:text-nova-500 [&.active]:text-nova-500 dark:[&.active]:text-nova-500 [&.active]:bg-nova-50 dark:[&.active]:bg-nova-500/10 [&.active]:border-nova-50 dark:[&.active]:border-nova-500/10 [&.active]:hover:text-nova-700 dark:[&.active]:hover:text-nova-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">3</a>
                     </li>
                     <li>
                         <a href="#!"
-                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">Next
+                            class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-nova-500 dark:hover:text-nova-500 hover:bg-nova-50 dark:hover:bg-nova-500/10 focus:bg-nova-50 dark:focus:bg-nova-500/10 focus:text-nova-500 dark:focus:text-nova-500 [&.active]:text-nova-500 dark:[&.active]:text-nova-500 [&.active]:bg-nova-50 dark:[&.active]:bg-nova-500/10 [&.active]:border-nova-50 dark:[&.active]:border-nova-500/10 [&.active]:hover:text-nova-700 dark:[&.active]:hover:text-nova-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">Next
                             <i class="ml-1 size-4 rtl:rotate-180" data-lucide="chevron-right"></i></a>
                     </li>
                 </ul>

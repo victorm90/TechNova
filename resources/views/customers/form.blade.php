@@ -9,7 +9,7 @@
                     <div class="grow">
                         <h5 class="text-16">{{ $customer->exists ? 'Editar cliente' : 'Nuevo cliente' }}</h5>
                     </div>
-                    <a href="{{ route('customers.index') }}" class="text-slate-500 btn border-slate-200 hover:text-custom-500">Volver al listado</a>
+                    <a href="{{ route('customers.index') }}" class="text-slate-500 btn border-slate-200 hover:text-nova-500">Volver al listado</a>
                 </div>
 
                 <div class="card">
@@ -24,8 +24,8 @@
                             @include('customers._fields')
 
                             <div class="flex items-end gap-2 md:col-span-2">
-                                <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600">Guardar cliente</button>
-                                <a href="{{ route('customers.index') }}" class="btn border-slate-200 text-slate-500 hover:text-custom-500">Cancelar</a>
+                                <button type="submit" class="text-white btn bg-nova-500 border-nova-500 hover:bg-nova-600">Guardar cliente</button>
+                                <a href="{{ route('customers.index') }}" class="btn border-slate-200 text-slate-500 hover:text-nova-500">Cancelar</a>
                             </div>
                         </form>
                     </div>

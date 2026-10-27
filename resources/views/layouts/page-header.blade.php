@@ -1,42 +1,55 @@
 @php
     $breadcrumbs = $breadcrumbs ?? [];
+    $accent = $accent ?? 'nova';
+
+    $accentClasses = match ($accent) {
+        'green' => 'bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700',
+        'blue' => 'bg-gradient-to-br from-sky-100 to-sky-50 text-sky-700',
+        'amber' => 'bg-gradient-to-br from-amber-100 to-amber-50 text-amber-700',
+        default => 'bg-gradient-to-br from-nova-100 to-nova-50 text-nova-700',
+    };
 @endphp
 
-<div class="flex flex-col gap-3 py-4 md:flex-row md:items-center print:hidden">
-    <div class="grow">
-        <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center rounded-lg size-11 bg-custom-500/10">
-                <i data-lucide="{{ $icon }}" class="size-6 text-custom-500"></i>
+<div class="nova-hero mb-5 print:hidden">
+    <div class="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-4">
+            <div class="nova-hero-icon {{ $accentClasses }}">
+                <i data-lucide="{{ $icon }}" class="size-6"></i>
             </div>
-            <div>
-                <h5 class="text-lg font-semibold text-slate-800 dark:text-zink-100">
+
+            <div class="min-w-0">
+                @if ($breadcrumbs)
+                    <nav class="nova-breadcrumb mb-1.5" aria-label="Ruta de navegación">
+                        @foreach ($breadcrumbs as $breadcrumb)
+                            @if (! $loop->last)
+                                @if (isset($breadcrumb['url']))
+                                    <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                                @else
+                                    <span class="text-slate-400 dark:text-zink-400">
+                                        {{ $breadcrumb['label'] }}
+                                    </span>
+                                @endif
+
+                                <i data-lucide="chevron-right" class="size-3 text-slate-300 dark:text-zink-500"></i>
+                            @else
+                                <span class="font-medium text-slate-500 dark:text-zink-300">
+                                    {{ $breadcrumb['label'] }}
+                                </span>
+                            @endif
+                        @endforeach
+                    </nav>
+                @endif
+
+                <h1 class="text-xl font-semibold text-slate-800 sm:text-2xl dark:text-zink-50">
                     {{ $title }}
-                </h5>
+                </h1>
+
                 @if ($description)
-                    <p class="text-sm text-slate-500 dark:text-zink-300">
+                    <p class="mt-1 text-sm text-slate-500 dark:text-zink-300">
                         {{ $description }}
                     </p>
                 @endif
             </div>
         </div>
     </div>
-
-    @if ($breadcrumbs)
-        <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li @class([
-                    'font-medium text-slate-700 dark:text-zink-100' => $loop->last,
-                    'relative pr-4 text-slate-400 before:content-[\'\\ea54\'] before:font-remix before:absolute before:right-0 before:text-[16px] before:top-0' => !$loop->last,
-                ])>
-                    @if (! $loop->last && isset($breadcrumb['url']))
-                        <a href="{{ $breadcrumb['url'] }}" class="hover:text-custom-500">
-                            {{ $breadcrumb['label'] }}
-                        </a>
-                    @else
-                        {{ $breadcrumb['label'] }}
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-    @endif
 </div>
