@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) {
+        if (app()->isProduction() && ! config('app.seed_demo_users')) {
             return;
         }
 

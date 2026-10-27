@@ -30,6 +30,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Usuarios de demostración
+    |--------------------------------------------------------------------------
+    |
+    | Permite crear los usuarios demo en despliegues de pruebas aunque
+    | APP_ENV sea "production". En local se crean siempre.
+    |
+    */
+
+    'seed_demo_users' => env('SEED_DEMO_USERS', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |
