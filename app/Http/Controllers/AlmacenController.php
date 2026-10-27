@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Almacen\StoreAlmacenRapidoRequest;
 use App\Http\Requests\Almacen\StoreAlmacenRequest;
 use App\Http\Requests\Almacen\UpdateAlmacenRequest;
 use App\Models\Almacen;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +64,33 @@ class AlmacenController extends Controller
             return back()
                 ->withInput()
                 ->with('error', 'No se pudo crear el almacén. Inténtelo nuevamente.');
+        }
+    }
+
+    /**
+     * Crear un almacén solo con su nombre desde el formulario de entradas.
+     */
+    public function storeRapido(StoreAlmacenRapidoRequest $request): JsonResponse
+    {
+        try {
+            $almacen = Almacen::create([
+                'nombre' => $request->validated('nombre'),
+                'activo' => true,
+            ]);
+
+            return response()->json([
+                'id' => $almacen->id,
+                'nombre' => $almacen->nombre,
+            ], 201);
+        } catch (Throwable $e) {
+            Log::error('Error al crear almacén rápido.', [
+                'exception' => $e->getMessage(),
+                'user_id' => $request->user()?->id,
+            ]);
+
+            return response()->json([
+                'message' => 'No se pudo crear el almacén. Inténtelo nuevamente.',
+            ], 500);
         }
     }
 

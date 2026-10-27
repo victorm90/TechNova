@@ -20,9 +20,6 @@ class UpdateProductoRequest extends FormRequest
         $this->merge([
             'nombre' => trim((string) $this->input('nombre')),
             'activo' => $this->boolean('activo'),
-            'precio_compra' => $this->input('precio_compra', 0),
-            'precio_venta' => $this->input('precio_venta', 0),
-            'stock_minimo' => $this->input('stock_minimo', 0),
         ]);
     }
 
@@ -39,12 +36,9 @@ class UpdateProductoRequest extends FormRequest
                 'max:120',
                 $this->nombreUnico(),
             ],
-            'descripcion' => ['nullable', 'string', 'max:1000'],
             'categoria_producto_id' => ['required', 'integer', 'exists:categorias_productos,id'],
             'unidad_medida_id' => ['required', 'integer', 'exists:unidad_medidas,id'],
-            'precio_compra' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
-            'precio_venta' => ['required', 'numeric', 'min:0', 'gte:precio_compra', 'max:99999999.99'],
-            'stock_minimo' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
+            'imagen' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'activo' => ['boolean'],
         ];
     }
@@ -63,16 +57,10 @@ class UpdateProductoRequest extends FormRequest
             'categoria_producto_id.exists' => 'La categoría seleccionada no es válida.',
             'unidad_medida_id.required' => 'La unidad de medida es obligatoria.',
             'unidad_medida_id.exists' => 'La unidad de medida seleccionada no es válida.',
-            'descripcion.max' => 'La descripción no puede superar los 1000 caracteres.',
-            'precio_compra.required' => 'El precio de compra es obligatorio.',
-            'precio_compra.numeric' => 'El precio de compra debe ser un número.',
-            'precio_compra.min' => 'El precio de compra no puede ser negativo.',
-            'precio_venta.required' => 'El precio de venta es obligatorio.',
-            'precio_venta.numeric' => 'El precio de venta debe ser un número.',
-            'precio_venta.min' => 'El precio de venta no puede ser negativo.',
-            'precio_venta.gte' => 'El precio de venta debe ser mayor o igual al precio de compra.',
-            'stock_minimo.required' => 'El stock mínimo es obligatorio.',
-            'stock_minimo.min' => 'El stock mínimo no puede ser negativo.',
+            'imagen.image' => 'El archivo debe ser una imagen.',
+            'imagen.mimes' => 'La imagen debe ser de tipo JPG, JPEG, PNG o WEBP.',
+            'imagen.max' => 'La imagen no puede superar los 2 MB.',
+            'imagen.uploaded' => 'No se pudo subir la imagen. Inténtelo nuevamente.',
         ];
     }
 

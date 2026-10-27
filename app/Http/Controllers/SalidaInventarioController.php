@@ -6,6 +6,7 @@ use App\Http\Requests\Inventario\StoreSalidaRequest;
 use App\Models\Almacen;
 use App\Models\Inventario;
 use App\Models\OperacionInventario;
+use App\Models\OperacionInventarioLinea;
 use App\Models\Producto;
 use App\Services\InventarioService;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,6 +48,18 @@ class SalidaInventarioController extends Controller
             'operaciones' => $operaciones,
             'search' => $search,
             'tipo' => OperacionInventario::TIPO_SALIDA,
+            'resumen' => [
+                'operaciones' => OperacionInventario::query()
+                    ->where('tipo', OperacionInventario::TIPO_SALIDA)
+                    ->count(),
+                'unidades' => (int) OperacionInventarioLinea::query()
+                    ->whereHas('operacion', fn (Builder $query): Builder => $query
+                        ->where('tipo', OperacionInventario::TIPO_SALIDA))
+                    ->sum('cantidad'),
+                'valor' => (float) OperacionInventario::query()
+                    ->where('tipo', OperacionInventario::TIPO_SALIDA)
+                    ->sum('total'),
+            ],
         ]);
     }
 
@@ -56,9 +69,15 @@ class SalidaInventarioController extends Controller
     public function create(): View
     {
         $stock = Inventario::query()
-            ->get(['producto_id', 'almacen_id', 'cantidad'])
+            ->get(['producto_id', 'almacen_id', 'cantidad', 'costo_promedio'])
             ->mapWithKeys(fn (Inventario $inventario): array => [
                 "{$inventario->almacen_id}-{$inventario->producto_id}" => (float) $inventario->cantidad,
+            ]);
+
+        $costos = Inventario::query()
+            ->get(['producto_id', 'almacen_id', 'costo_promedio'])
+            ->mapWithKeys(fn (Inventario $inventario): array => [
+                "{$inventario->almacen_id}-{$inventario->producto_id}" => (float) $inventario->costo_promedio,
             ]);
 
         return view('inventario.operaciones.create', [
@@ -67,6 +86,7 @@ class SalidaInventarioController extends Controller
             'productos' => $this->productosParaOperacion(),
             'proveedores' => collect(),
             'stock' => $stock,
+            'costos' => $costos,
         ]);
     }
 

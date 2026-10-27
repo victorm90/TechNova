@@ -39,7 +39,7 @@ class OperacionInventarioLinea extends Model
     protected function casts(): array
     {
         return [
-            'cantidad' => 'decimal:2',
+            'cantidad' => 'integer',
             'costo_unitario' => 'decimal:2',
             'subtotal' => 'decimal:2',
         ];

@@ -52,7 +52,7 @@ class Inventario extends Model
     protected function casts(): array
     {
         return [
-            'cantidad' => 'decimal:2',
+            'cantidad' => 'integer',
             'costo_promedio' => 'decimal:4',
             'ultimo_movimiento_at' => 'datetime',
         ];

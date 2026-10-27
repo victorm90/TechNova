@@ -3,79 +3,77 @@
 namespace App\Services;
 
 use App\Models\Producto;
-use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoService
 {
-    public function __construct(
-        private readonly SecuenciaService $secuencias,
-        private readonly InventarioService $inventario,
-    ) {}
+    public function __construct(private readonly SecuenciaService $secuencias) {}
 
     /**
-     * Crear un producto con SKU consecutivo y su inventario inicial.
+     * Crear un producto con SKU consecutivo. Las existencias y los precios se
+     * registran posteriormente mediante una entrada de inventario.
      *
-     * @param  array<string, mixed>  $datos
+     * @param  array{nombre: string, categoria_producto_id: int, unidad_medida_id: int, imagen?: UploadedFile|null}  $datos
      */
-    public function crear(array $datos, ?User $usuario = null): Producto
+    public function crear(array $datos): Producto
     {
-        return DB::transaction(function () use ($datos, $usuario): Producto {
+        return DB::transaction(function () use ($datos): Producto {
             $producto = Producto::create([
                 'sku' => $this->secuencias->siguiente('productos', 'PROD-'),
                 'nombre' => $datos['nombre'],
-                'descripcion' => $datos['descripcion'] ?? null,
                 'categoria_producto_id' => $datos['categoria_producto_id'],
                 'unidad_medida_id' => $datos['unidad_medida_id'],
-                'precio_compra' => $datos['precio_compra'] ?? 0,
-                'precio_venta' => $datos['precio_venta'] ?? 0,
-                'stock_minimo' => $datos['stock_minimo'] ?? 0,
-                'activo' => $datos['activo'] ?? true,
+                'imagen' => $this->guardarImagen($datos['imagen'] ?? null),
+                'activo' => true,
             ]);
-
-            if (! empty($datos['almacen_id'])) {
-                $cantidadInicial = round((float) ($datos['cantidad_inicial'] ?? 0), 2);
-
-                if ($cantidadInicial > 0) {
-                    $this->inventario->registrarEntrada([
-                        'almacen_id' => (int) $datos['almacen_id'],
-                        'referencia' => 'Inventario inicial',
-                        'notas' => "Carga inicial al crear el producto {$producto->sku}.",
-                        'lineas' => [[
-                            'producto_id' => $producto->id,
-                            'cantidad' => $cantidadInicial,
-                            'costo_unitario' => $datos['precio_compra'] ?? 0,
-                        ]],
-                    ], $usuario);
-                } else {
-                    $this->inventario->asegurarRegistro($producto->id, (int) $datos['almacen_id']);
-                }
-            }
 
             return $producto->refresh();
         });
     }
 
     /**
-     * Actualizar los datos maestros de un producto sin alterar existencias.
+     * Actualizar los datos maestros de un producto sin alterar existencias ni precios.
      *
-     * @param  array<string, mixed>  $datos
+     * @param  array{nombre: string, categoria_producto_id: int, unidad_medida_id: int, imagen?: UploadedFile|null, activo?: bool}  $datos
      */
     public function actualizar(Producto $producto, array $datos): Producto
     {
         return DB::transaction(function () use ($producto, $datos): Producto {
+            $imagen = $producto->imagen;
+
+            if (($datos['imagen'] ?? null) instanceof UploadedFile) {
+                $nuevaImagen = $this->guardarImagen($datos['imagen']);
+
+                if ($nuevaImagen !== null && $imagen !== null) {
+                    Storage::disk('public')->delete($imagen);
+                }
+
+                $imagen = $nuevaImagen;
+            }
+
             $producto->update([
                 'nombre' => $datos['nombre'],
-                'descripcion' => $datos['descripcion'] ?? null,
                 'categoria_producto_id' => $datos['categoria_producto_id'],
                 'unidad_medida_id' => $datos['unidad_medida_id'],
-                'precio_compra' => $datos['precio_compra'] ?? 0,
-                'precio_venta' => $datos['precio_venta'] ?? 0,
-                'stock_minimo' => $datos['stock_minimo'] ?? 0,
-                'activo' => $datos['activo'] ?? true,
+                'imagen' => $imagen,
+                'activo' => $datos['activo'] ?? $producto->activo,
             ]);
 
             return $producto->refresh();
         });
+    }
+
+    /**
+     * Guardar la imagen en el disco público y devolver su ruta relativa.
+     */
+    private function guardarImagen(?UploadedFile $imagen): ?string
+    {
+        if (! $imagen instanceof UploadedFile) {
+            return null;
+        }
+
+        return $imagen->store('productos', 'public');
     }
 }

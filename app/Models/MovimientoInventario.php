@@ -58,8 +58,8 @@ class MovimientoInventario extends Model
     protected function casts(): array
     {
         return [
-            'cantidad' => 'decimal:2',
-            'saldo_resultante' => 'decimal:2',
+            'cantidad' => 'integer',
+            'saldo_resultante' => 'integer',
             'costo_unitario' => 'decimal:4',
         ];
     }

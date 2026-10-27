@@ -51,7 +51,7 @@ class InventarioController extends Controller
             ->first();
 
         $resumen = [
-            'unidades' => (float) ($totales->unidades ?? 0),
+            'unidades' => (int) ($totales->unidades ?? 0),
             'valor' => (float) ($totales->valor ?? 0),
             'bajo_minimo' => Inventario::query()
                 ->whereHas('producto', fn (Builder $query): Builder => $query->whereColumn(

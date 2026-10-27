@@ -21,15 +21,13 @@ class InventarioService
      * @param  array{
      *     almacen_id: int,
      *     proveedor_id?: int|null,
-     *     referencia?: string|null,
-     *     notas?: string|null,
-     *     lineas: array<int, array{producto_id: int, cantidad: numeric, costo_unitario?: numeric}>
+     *     lineas: array<int, array{producto_id: int, cantidad: int, precio_compra: numeric, stock_minimo: int}>
      * }  $datos
      */
     public function registrarEntrada(array $datos, ?User $usuario = null): OperacionInventario
     {
         return DB::transaction(function () use ($datos, $usuario): OperacionInventario {
-            $lineas = $this->normalizarLineas($datos['lineas'] ?? []);
+            $lineas = $this->normalizarLineas($datos['lineas'] ?? [], true);
 
             $operacion = OperacionInventario::create([
                 'codigo' => $this->secuencias->siguiente('operaciones_entrada', 'ENT-'),
@@ -37,8 +35,8 @@ class InventarioService
                 'almacen_id' => (int) $datos['almacen_id'],
                 'proveedor_id' => $datos['proveedor_id'] ?? null,
                 'user_id' => $usuario?->id,
-                'referencia' => $datos['referencia'] ?? null,
-                'notas' => $datos['notas'] ?? null,
+                'referencia' => null,
+                'notas' => null,
                 'total' => 0,
             ]);
 
@@ -46,14 +44,15 @@ class InventarioService
 
             foreach ($lineas as $indice => $linea) {
                 $producto = $this->productoDisponible($linea['producto_id'], $indice);
-                $cantidad = round((float) $linea['cantidad'], 2);
-                $costoUnitario = round((float) ($linea['costo_unitario'] ?? 0), 2);
+                $cantidad = (int) $linea['cantidad'];
+                $costoUnitario = round((float) $linea['precio_compra'], 2);
+                $stockMinimo = (int) $linea['stock_minimo'];
 
                 $inventario = $this->bloquearInventario($producto->id, (int) $datos['almacen_id']);
 
-                $cantidadAnterior = (float) $inventario->cantidad;
+                $cantidadAnterior = (int) $inventario->cantidad;
                 $costoAnterior = (float) $inventario->costo_promedio;
-                $nuevaCantidad = round($cantidadAnterior + $cantidad, 2);
+                $nuevaCantidad = $cantidadAnterior + $cantidad;
 
                 $nuevoCosto = $nuevaCantidad > 0
                     ? round((($cantidadAnterior * $costoAnterior) + ($cantidad * $costoUnitario)) / $nuevaCantidad, 4)
@@ -65,9 +64,10 @@ class InventarioService
                     'ultimo_movimiento_at' => now(),
                 ]);
 
-                if ($costoUnitario > 0) {
-                    $producto->update(['precio_compra' => $costoUnitario]);
-                }
+                $producto->update([
+                    'precio_compra' => $costoUnitario,
+                    'stock_minimo' => $stockMinimo,
+                ]);
 
                 $subtotal = round($cantidad * $costoUnitario, 2);
 
@@ -105,7 +105,7 @@ class InventarioService
      *     almacen_id: int,
      *     referencia?: string|null,
      *     notas?: string|null,
-     *     lineas: array<int, array{producto_id: int, cantidad: numeric}>
+     *     lineas: array<int, array{producto_id: int, cantidad: int}>
      * }  $datos
      */
     public function registrarSalida(array $datos, ?User $usuario = null): OperacionInventario
@@ -128,7 +128,7 @@ class InventarioService
 
             foreach ($lineas as $indice => $linea) {
                 $producto = $this->productoDisponible($linea['producto_id'], $indice);
-                $cantidad = round((float) $linea['cantidad'], 2);
+                $cantidad = (int) $linea['cantidad'];
 
                 $inventario = Inventario::query()
                     ->where('producto_id', $producto->id)
@@ -136,21 +136,21 @@ class InventarioService
                     ->lockForUpdate()
                     ->first();
 
-                $disponible = $inventario ? (float) $inventario->cantidad : 0.0;
+                $disponible = $inventario ? (int) $inventario->cantidad : 0;
 
                 if (! $inventario || $cantidad > $disponible) {
                     throw ValidationException::withMessages([
                         "lineas.{$indice}.cantidad" => sprintf(
                             'Stock insuficiente para "%s". Disponible: %s %s.',
                             $producto->nombre,
-                            number_format($disponible, 2, ',', '.'),
+                            number_format($disponible, 0, ',', '.'),
                             $producto->unidadMedida?->abreviatura ?? 'unidades',
                         ),
                     ]);
                 }
 
                 $costoUnitario = round((float) $inventario->costo_promedio, 2);
-                $nuevaCantidad = round($disponible - $cantidad, 2);
+                $nuevaCantidad = $disponible - $cantidad;
 
                 $inventario->update([
                     'cantidad' => $nuevaCantidad,
@@ -181,6 +181,86 @@ class InventarioService
             }
 
             $operacion->update(['total' => round($totalOperacion, 2)]);
+
+            return $operacion->refresh();
+        });
+    }
+
+    /**
+     * Ajustar la cantidad en stock de un producto ya existente en un almacén.
+     * No crea productos ni modifica precios.
+     *
+     * @param  array{inventario_id: int, cantidad: int}  $datos
+     */
+    public function registrarAjuste(array $datos, ?User $usuario = null): OperacionInventario
+    {
+        return DB::transaction(function () use ($datos, $usuario): OperacionInventario {
+            $inventario = Inventario::query()
+                ->with('producto')
+                ->lockForUpdate()
+                ->find($datos['inventario_id']);
+
+            if (! $inventario || ! $inventario->producto) {
+                throw ValidationException::withMessages([
+                    'inventario_id' => 'El producto no existe en el almacén seleccionado.',
+                ]);
+            }
+
+            $cantidadAnterior = (int) $inventario->cantidad;
+            $cantidadNueva = (int) $datos['cantidad'];
+
+            if ($cantidadNueva < 0) {
+                throw ValidationException::withMessages([
+                    'cantidad' => 'La cantidad en stock no puede ser negativa.',
+                ]);
+            }
+
+            if ($cantidadNueva === $cantidadAnterior) {
+                throw ValidationException::withMessages([
+                    'cantidad' => 'La cantidad indicada es igual al stock actual. No hay nada que ajustar.',
+                ]);
+            }
+
+            $diferencia = $cantidadNueva - $cantidadAnterior;
+            $costoUnitario = round((float) $inventario->costo_promedio, 4);
+
+            $inventario->update([
+                'cantidad' => $cantidadNueva,
+                'ultimo_movimiento_at' => now(),
+            ]);
+
+            $operacion = OperacionInventario::create([
+                'codigo' => $this->secuencias->siguiente('operaciones_ajuste', 'AJU-'),
+                'tipo' => OperacionInventario::TIPO_AJUSTE,
+                'almacen_id' => $inventario->almacen_id,
+                'proveedor_id' => null,
+                'user_id' => $usuario?->id,
+                'referencia' => 'Ajuste de inventario',
+                'notas' => sprintf(
+                    'Stock ajustado de %s a %s unidades.',
+                    number_format($cantidadAnterior, 0, ',', '.'),
+                    number_format($cantidadNueva, 0, ',', '.'),
+                ),
+                'total' => 0,
+            ]);
+
+            $operacion->lineas()->create([
+                'producto_id' => $inventario->producto_id,
+                'cantidad' => $cantidadNueva,
+                'costo_unitario' => $costoUnitario,
+                'subtotal' => 0,
+            ]);
+
+            $this->registrarMovimiento(
+                operacion: $operacion,
+                producto: $inventario->producto,
+                inventario: $inventario,
+                tipo: OperacionInventario::TIPO_AJUSTE,
+                cantidad: $diferencia,
+                saldo: $cantidadNueva,
+                costoUnitario: $costoUnitario,
+                usuario: $usuario,
+            );
 
             return $operacion->refresh();
         });
@@ -234,9 +314,9 @@ class InventarioService
      * Validar y normalizar las líneas del documento.
      *
      * @param  array<int, array<string, mixed>>  $lineas
-     * @return array<int, array{producto_id: int, cantidad: float, costo_unitario?: float}>
+     * @return array<int, array{producto_id: int, cantidad: int, precio_compra?: float, stock_minimo?: int}>
      */
-    private function normalizarLineas(array $lineas): array
+    private function normalizarLineas(array $lineas, bool $conPrecioYMinimo = false): array
     {
         if ($lineas === []) {
             throw ValidationException::withMessages([
@@ -249,7 +329,7 @@ class InventarioService
 
         foreach (array_values($lineas) as $indice => $linea) {
             $productoId = (int) ($linea['producto_id'] ?? 0);
-            $cantidad = round((float) ($linea['cantidad'] ?? 0), 2);
+            $cantidad = filter_var($linea['cantidad'] ?? null, FILTER_VALIDATE_INT);
 
             if ($productoId <= 0) {
                 throw ValidationException::withMessages([
@@ -257,9 +337,9 @@ class InventarioService
                 ]);
             }
 
-            if ($cantidad <= 0) {
+            if ($cantidad === false || $cantidad <= 0) {
                 throw ValidationException::withMessages([
-                    "lineas.{$indice}.cantidad" => 'La cantidad debe ser mayor que cero.',
+                    "lineas.{$indice}.cantidad" => 'La cantidad debe ser un número entero mayor que cero.',
                 ]);
             }
 
@@ -271,11 +351,32 @@ class InventarioService
 
             $productosVistos[$productoId] = true;
 
-            $normalizadas[] = [
+            $normalizada = [
                 'producto_id' => $productoId,
                 'cantidad' => $cantidad,
-                'costo_unitario' => round((float) ($linea['costo_unitario'] ?? 0), 2),
             ];
+
+            if ($conPrecioYMinimo) {
+                $precio = round((float) ($linea['precio_compra'] ?? 0), 2);
+                $stockMinimo = (int) ($linea['stock_minimo'] ?? 0);
+
+                if ($precio < 0) {
+                    throw ValidationException::withMessages([
+                        "lineas.{$indice}.precio_compra" => 'El precio de compra no puede ser negativo.',
+                    ]);
+                }
+
+                if ($stockMinimo < 0) {
+                    throw ValidationException::withMessages([
+                        "lineas.{$indice}.stock_minimo" => 'El stock mínimo no puede ser negativo.',
+                    ]);
+                }
+
+                $normalizada['precio_compra'] = $precio;
+                $normalizada['stock_minimo'] = $stockMinimo;
+            }
+
+            $normalizadas[] = $normalizada;
         }
 
         return $normalizadas;
@@ -311,8 +412,8 @@ class InventarioService
         Producto $producto,
         Inventario $inventario,
         string $tipo,
-        float $cantidad,
-        float $saldo,
+        int $cantidad,
+        int $saldo,
         float $costoUnitario,
         ?User $usuario,
     ): void {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AjusteInventarioController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CategoriaProductoController;
@@ -123,6 +124,20 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('can:registrar-movimientos')->group(function () {
+        Route::get('/inventario/ajustes', [AjusteInventarioController::class, 'index'])
+            ->name('ajustes.index');
+        Route::get('/inventario/ajustes/crear', [AjusteInventarioController::class, 'create'])
+            ->name('ajustes.create');
+        Route::post('/inventario/ajustes', [AjusteInventarioController::class, 'store'])
+            ->name('ajustes.store');
+        Route::get('/inventario/ajustes/{operacion}', [AjusteInventarioController::class, 'show'])
+            ->name('ajustes.show');
+
+        Route::post('/inventario/entradas/almacenes', [AlmacenController::class, 'storeRapido'])
+            ->name('entradas.almacenes.store');
+        Route::post('/inventario/entradas/proveedores', [ProveedorController::class, 'storeRapido'])
+            ->name('entradas.proveedores.store');
+
         Route::get('/inventario/entradas', [EntradaInventarioController::class, 'index'])
             ->name('entradas.index');
         Route::get('/inventario/entradas/crear', [EntradaInventarioController::class, 'create'])

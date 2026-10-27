@@ -12,7 +12,7 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        Customer::factory()->createMany([
+        $clientes = [
             [
                 'name' => 'Maria Elena Rodriguez',
                 'address' => 'Calle 12 #45-18, Centro',
@@ -25,8 +25,19 @@ class CustomerSeeder extends Seeder
                 'phone' => '55501002',
                 'identity_card' => '98765432109',
             ],
-        ]);
+        ];
 
-        Customer::factory(8)->create();
+        foreach ($clientes as $cliente) {
+            Customer::query()->firstOrCreate(
+                ['identity_card' => $cliente['identity_card']],
+                $cliente,
+            );
+        }
+
+        $faltantes = max(0, 10 - Customer::query()->count());
+
+        if ($faltantes > 0) {
+            Customer::factory($faltantes)->create();
+        }
     }
 }

@@ -20,7 +20,11 @@ class DatabaseSeeder extends Seeder
             MunicipioSeeder::class,
             EntidadSeeder::class,
             UnidadMedidaSeeder::class,
+            CategoriaProductoSeeder::class,
+            AlmacenSeeder::class,
+            ProveedorSeeder::class,
             ServicioSeeder::class,
+            ProductoSeeder::class,
         ]);
 
         $this->call(CustomerSeeder::class);

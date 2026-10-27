@@ -23,6 +23,8 @@ class OperacionInventario extends Model
 
     public const TIPO_SALIDA = 'salida';
 
+    public const TIPO_AJUSTE = 'ajuste';
+
     protected $table = 'operaciones_inventario';
 
     /**
@@ -76,9 +78,9 @@ class OperacionInventario extends Model
     /**
      * Cantidad total de unidades de la operación.
      */
-    public function cantidadTotal(): float
+    public function cantidadTotal(): int
     {
-        return (float) $this->lineas()->sum('cantidad');
+        return (int) $this->lineas()->sum('cantidad');
     }
 
     /**

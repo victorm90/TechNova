@@ -29,7 +29,7 @@ class StoreSalidaRequest extends FormRequest
             'notas' => ['nullable', 'string', 'max:1000'],
             'lineas' => ['required', 'array', 'min:1'],
             'lineas.*.producto_id' => ['required', 'integer', 'distinct', 'exists:productos,id'],
-            'lineas.*.cantidad' => ['required', 'numeric', 'gt:0', 'max:99999999.99'],
+            'lineas.*.cantidad' => ['required', 'integer', 'gt:0', 'max:99999999'],
         ];
     }
 
@@ -50,7 +50,7 @@ class StoreSalidaRequest extends FormRequest
             'lineas.*.producto_id.distinct' => 'No puedes repetir el mismo producto en una salida.',
             'lineas.*.cantidad.required' => 'Indica la cantidad en cada línea.',
             'lineas.*.cantidad.gt' => 'La cantidad debe ser mayor que cero.',
-            'lineas.*.cantidad.numeric' => 'La cantidad debe ser un número.',
+            'lineas.*.cantidad.integer' => 'La cantidad debe ser un número entero.',
         ];
     }
 }

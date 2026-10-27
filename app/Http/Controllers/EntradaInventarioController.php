@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Inventario\StoreEntradaRequest;
 use App\Models\Almacen;
 use App\Models\OperacionInventario;
+use App\Models\OperacionInventarioLinea;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Services\InventarioService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -48,17 +49,34 @@ class EntradaInventarioController extends Controller
             'operaciones' => $operaciones,
             'search' => $search,
             'tipo' => OperacionInventario::TIPO_ENTRADA,
+            'resumen' => [
+                'operaciones' => OperacionInventario::query()
+                    ->where('tipo', OperacionInventario::TIPO_ENTRADA)
+                    ->count(),
+                'unidades' => (int) OperacionInventarioLinea::query()
+                    ->whereHas('operacion', fn (Builder $query): Builder => $query
+                        ->where('tipo', OperacionInventario::TIPO_ENTRADA))
+                    ->sum('cantidad'),
+                'valor' => (float) OperacionInventario::query()
+                    ->where('tipo', OperacionInventario::TIPO_ENTRADA)
+                    ->sum('total'),
+            ],
         ]);
     }
 
     /**
      * Formulario para registrar una entrada con múltiples líneas.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('inventario.operaciones.create', [
-            'tipo' => OperacionInventario::TIPO_ENTRADA,
-            'almacenes' => Almacen::query()->activos()->orderBy('nombre')->get(),
+        $almacenes = Almacen::query()
+            ->activos()
+            ->orderBy('nombre')
+            ->get(['id', 'nombre']);
+
+        return view('inventario.entradas.create', [
+            'almacenes' => $almacenes,
+            'almacenId' => $request->integer('almacen') ?: ($almacenes->first()->id ?? 0),
             'productos' => $this->productosParaOperacion(),
             'proveedores' => Proveedor::query()->orderBy('nombre')->get(['id', 'nombre', 'activo']),
         ]);
@@ -72,27 +90,11 @@ class EntradaInventarioController extends Controller
         $datos = $request->validated();
 
         try {
-            $operacion = DB::transaction(function () use ($datos, $request): OperacionInventario {
-                $proveedorId = $datos['proveedor_id'] ?? null;
-                $nombreProveedor = trim((string) ($datos['proveedor_nombre'] ?? ''));
-
-                if ($nombreProveedor !== '') {
-                    $proveedor = Proveedor::query()->firstOrCreate(
-                        ['nombre' => $nombreProveedor],
-                        ['activo' => true],
-                    );
-
-                    $proveedorId = $proveedor->id;
-                }
-
-                return $this->inventario->registrarEntrada([
-                    'almacen_id' => $datos['almacen_id'],
-                    'proveedor_id' => $proveedorId,
-                    'referencia' => $datos['referencia'] ?? null,
-                    'notas' => $datos['notas'] ?? null,
-                    'lineas' => $datos['lineas'],
-                ], $request->user());
-            });
+            $operacion = $this->inventario->registrarEntrada([
+                'almacen_id' => $datos['almacen_id'],
+                'proveedor_id' => $datos['proveedor_id'] ?? null,
+                'lineas' => $datos['lineas'],
+            ], $request->user());
 
             return redirect()
                 ->route('entradas.show', $operacion)
@@ -127,9 +129,9 @@ class EntradaInventarioController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Producto>
+     * @return Collection<int, Producto>
      */
-    private function productosParaOperacion(): \Illuminate\Database\Eloquent\Collection
+    private function productosParaOperacion(): Collection
     {
         return Producto::query()
             ->activos()

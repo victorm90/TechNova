@@ -15,69 +15,6 @@
 <body class="nova-product-bg font-public text-slate-700 antialiased">
     <a href="#producto" class="nova-skip-link">Saltar al producto</a>
 
-    @php
-        /*
-         | Catálogo de demostración. Sustituir por el modelo de productos
-         | cuando exista el módulo comercial en la base de datos.
-         */
-        $featuredProducts = [
-            [
-                'name' => 'TechNova Warehouse',
-                'category' => 'Gestión de almacén',
-                'description' => 'Inventario, ventas y facturación en un solo panel.',
-                'price' => 149,
-                'image' => 'warehouse-dashboard.png',
-                'status' => 'ok',
-                'status_label' => 'Disponible',
-            ],
-            [
-                'name' => 'TechNova POS',
-                'category' => 'Punto de venta',
-                'description' => 'Cobro rápido con control de caja y turnos.',
-                'price' => 89,
-                'image' => 'product-home.png',
-                'status' => 'ok',
-                'status_label' => 'Disponible',
-            ],
-            [
-                'name' => 'TechNova Facturación',
-                'category' => 'Facturación',
-                'description' => 'Facturas, cobros y estados de cuenta automatizados.',
-                'price' => 119,
-                'image' => 'order-overview.jpg',
-                'status' => 'low',
-                'status_label' => 'Últimas licencias',
-            ],
-            [
-                'name' => 'TechNova Reportes',
-                'category' => 'Analítica',
-                'description' => 'Indicadores de rotación, margen y actividad.',
-                'price' => 69,
-                'image' => 'dashboard.png',
-                'status' => 'ok',
-                'status_label' => 'Disponible',
-            ],
-            [
-                'name' => 'TechNova Compras',
-                'category' => 'Abastecimiento',
-                'description' => 'Órdenes de compra y seguimiento de proveedores.',
-                'price' => 79,
-                'image' => 'img-01.png',
-                'status' => 'ok',
-                'status_label' => 'Disponible',
-            ],
-            [
-                'name' => 'TechNova CRM',
-                'category' => 'Clientes',
-                'description' => 'Directorio, historial y seguimiento comercial.',
-                'price' => 59,
-                'image' => 'img-02.png',
-                'status' => 'out',
-                'status_label' => 'Sin stock',
-            ],
-        ];
-    @endphp
-
     {{-- ============================================================
          NAVEGACIÓN
          ============================================================ --}}
@@ -366,10 +303,12 @@
             {{-- ====================================================
                  ESTADÍSTICAS REALES
                  ==================================================== --}}
-            <section class="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur sm:grid-cols-4"
+            <section class="mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur sm:grid-cols-3 lg:grid-cols-6"
                 aria-label="Datos del sistema">
                 @foreach ([
                     ['label' => 'Clientes registrados', 'value' => $totalCustomers, 'icon' => 'users'],
+                    ['label' => 'Productos activos', 'value' => $totalProductos, 'icon' => 'package'],
+                    ['label' => 'Unidades en stock', 'value' => $totalUnidades, 'icon' => 'boxes'],
                     ['label' => 'Servicios activos', 'value' => $totalServicios, 'icon' => 'briefcase'],
                     ['label' => 'Provincias', 'value' => $totalProvincias, 'icon' => 'map'],
                     ['label' => 'Municipios', 'value' => $totalMunicipios, 'icon' => 'map-pin'],
@@ -380,7 +319,9 @@
                             <i data-lucide="{{ $stat['icon'] }}" class="size-4"></i>
                         </span>
                         <div>
-                            <p class="text-lg font-semibold text-slate-900">{{ number_format($stat['value']) }}</p>
+                            <p class="text-lg font-semibold text-slate-900">
+                                {{ number_format($stat['value'], $stat['decimals'] ?? 0, ',', '.') }}
+                            </p>
                             <p class="text-[11px] text-slate-500">{{ $stat['label'] }}</p>
                         </div>
                     </div>
@@ -533,14 +474,22 @@
                     <div class="max-w-2xl">
                         <div class="flex flex-wrap items-center gap-2">
                             <p class="text-xs font-semibold uppercase tracking-[0.18em] text-nova-700">Catálogo</p>
-                            <span class="nova-demo-badge">Datos de demostración</span>
+                            @if ($usandoProductosReales)
+                                <span class="nova-demo-badge">Catálogo real</span>
+                            @else
+                                <span class="nova-demo-badge">Datos de demostración</span>
+                            @endif
                         </div>
 
                         <h2 id="destacados-title" class="mt-2 text-2xl font-semibold text-slate-900">
                             Productos destacados
                         </h2>
                         <p class="mt-2 text-sm leading-7 text-slate-600">
-                            Complementa tu operación con módulos que se integran al mismo panel.
+                            @if ($usandoProductosReales)
+                                Los últimos productos registrados en el catálogo, con su disponibilidad actual.
+                            @else
+                                Complementa tu operación con módulos que se integran al mismo panel.
+                            @endif
                         </p>
                     </div>
 
@@ -570,7 +519,7 @@
                                         @if ($index === 0)
                                             <span
                                                 class="absolute left-3 top-3 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-amber-800 ring-1 ring-inset ring-amber-200">
-                                                Más vendido
+                                                {{ $usandoProductosReales ? 'Recién agregado' : 'Más vendido' }}
                                             </span>
                                         @endif
                                     </div>
@@ -588,18 +537,30 @@
                                             {{ $product['description'] }}
                                         </p>
 
+                                        @if (! empty($product['sku']))
+                                            <p class="mt-2 text-[11px] font-medium text-slate-500">
+                                                {{ $product['sku'] }} ·
+                                                {{ number_format((int) $product['stock'], 0, ',', '.') }}
+                                                {{ $product['unit'] }}
+                                            </p>
+                                        @endif
+
                                         <div class="mt-3 flex items-center justify-between gap-2">
                                             <p class="text-base font-semibold text-slate-900">
                                                 ${{ number_format($product['price'], 0, ',', '.') }}
-                                                <span class="text-[11px] font-medium text-slate-500">/ mes</span>
+                                                @if (! empty($product['price_suffix']))
+                                                    <span class="text-[11px] font-medium text-slate-500">
+                                                        {{ $product['price_suffix'] }}
+                                                    </span>
+                                                @endif
                                             </p>
 
                                             <x-status-badge :status="$product['status']" :label="$product['status_label']" />
                                         </div>
 
-                                        <a href="#producto"
+                                        <a href="{{ $product['url'] ?? '#producto' }}"
                                             class="btn mt-3 inline-flex w-full items-center justify-center border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-nova-300 hover:bg-nova-50 hover:text-nova-800">
-                                            Ver detalle
+                                            {{ $product['link_label'] ?? 'Ver detalle' }}
                                             <i data-lucide="arrow-right" class="ms-1.5 size-3.5" aria-hidden="true"></i>
                                         </a>
                                     </div>

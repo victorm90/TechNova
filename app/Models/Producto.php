@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'descripcion',
     'categoria_producto_id',
     'unidad_medida_id',
+    'imagen',
     'precio_compra',
     'precio_venta',
     'stock_minimo',
@@ -77,11 +78,23 @@ class Producto extends Model
     }
 
     /**
+     * URL pública de la imagen del producto o del placeholder del sistema.
+     */
+    public function imagenUrl(): string
+    {
+        if ($this->imagen) {
+            return asset('storage/'.$this->imagen);
+        }
+
+        return asset('assets/images/no-data.png');
+    }
+
+    /**
      * Existencia total del producto sumando todos los almacenes.
      */
-    public function stockTotal(): float
+    public function stockTotal(): int
     {
-        return (float) $this->inventarios()->sum('cantidad');
+        return (int) $this->inventarios()->sum('cantidad');
     }
 
     /**
@@ -89,7 +102,7 @@ class Producto extends Model
      */
     public function tieneStockBajo(): bool
     {
-        return $this->stockTotal() <= (float) $this->stock_minimo;
+        return $this->stockTotal() <= (int) $this->stock_minimo;
     }
 
     /**
@@ -100,7 +113,7 @@ class Producto extends Model
         return [
             'precio_compra' => 'decimal:2',
             'precio_venta' => 'decimal:2',
-            'stock_minimo' => 'decimal:2',
+            'stock_minimo' => 'integer',
             'activo' => 'boolean',
         ];
     }

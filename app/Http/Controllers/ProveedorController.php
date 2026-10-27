@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Proveedor\StoreProveedorRapidoRequest;
 use App\Http\Requests\Proveedor\StoreProveedorRequest;
 use App\Http\Requests\Proveedor\UpdateProveedorRequest;
 use App\Models\Proveedor;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +77,33 @@ class ProveedorController extends Controller
             return back()
                 ->withInput()
                 ->with('error', 'No se pudo crear el proveedor. Inténtelo nuevamente.');
+        }
+    }
+
+    /**
+     * Crear un proveedor solo con su nombre desde el formulario de entradas.
+     */
+    public function storeRapido(StoreProveedorRapidoRequest $request): JsonResponse
+    {
+        try {
+            $proveedor = Proveedor::create([
+                'nombre' => $request->validated('nombre'),
+                'activo' => true,
+            ]);
+
+            return response()->json([
+                'id' => $proveedor->id,
+                'nombre' => $proveedor->nombre,
+            ], 201);
+        } catch (Throwable $e) {
+            Log::error('Error al crear proveedor rápido.', [
+                'exception' => $e->getMessage(),
+                'user_id' => $request->user()?->id,
+            ]);
+
+            return response()->json([
+                'message' => 'No se pudo crear el proveedor. Inténtelo nuevamente.',
+            ], 500);
         }
     }
 

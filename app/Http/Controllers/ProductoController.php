@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Producto\StoreProductoRequest;
 use App\Http\Requests\Producto\UpdateProductoRequest;
-use App\Models\Almacen;
 use App\Models\CategoriaProducto;
 use App\Models\Inventario;
 use App\Models\Producto;
@@ -68,27 +67,21 @@ class ProductoController extends Controller
     public function create(): View
     {
         return view('productos.form', [
-            'producto' => new Producto([
-                'activo' => true,
-                'precio_compra' => 0,
-                'precio_venta' => 0,
-                'stock_minimo' => 0,
-            ]),
+            'producto' => new Producto(['activo' => true]),
             'categorias' => CategoriaProducto::query()->activas()->orderBy('nombre')->get(),
             'unidades' => UnidadMedida::query()->orderBy('nombre')->get(),
-            'almacenes' => Almacen::query()->activos()->orderBy('nombre')->get(),
         ]);
     }
 
     /**
-     * Guardar un producto y su inventario inicial.
+     * Guardar los datos maestros del producto.
      */
     public function store(StoreProductoRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
         try {
-            $producto = $this->productos->crear($validated, $request->user());
+            $producto = $this->productos->crear($validated);
 
             return redirect()
                 ->route('productos.show', $producto)
@@ -136,7 +129,6 @@ class ProductoController extends Controller
             'producto' => $producto,
             'categorias' => CategoriaProducto::query()->orderBy('nombre')->get(),
             'unidades' => UnidadMedida::query()->orderBy('nombre')->get(),
-            'almacenes' => Almacen::query()->activos()->orderBy('nombre')->get(),
         ]);
     }
 

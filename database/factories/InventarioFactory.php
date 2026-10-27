@@ -25,4 +25,6 @@ class InventarioFactory extends Factory
             'cantidad' => fake()->numberBetween(0, 200),
             'costo_promedio' => fake()->randomFloat(4, 1, 200),
             'ultimo_movimiento_at' => now(),
-       
+        ];
+    }
+}

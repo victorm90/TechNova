@@ -19,10 +19,17 @@
             <div class="relative flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
                 <div class="max-w-2xl">
                     <div class="flex flex-wrap items-center gap-2">
-                        <span class="nova-demo-badge">
-                            <i data-lucide="flask-conical" class="size-3" aria-hidden="true"></i>
-                            Datos de demostración
-                        </span>
+                        @if ($hasInventoryData)
+                            <span class="nova-demo-badge">
+                                <i data-lucide="database" class="size-3" aria-hidden="true"></i>
+                                Inventario real
+                            </span>
+                        @else
+                            <span class="nova-demo-badge">
+                                <i data-lucide="flask-conical" class="size-3" aria-hidden="true"></i>
+                                Datos de demostración
+                            </span>
+                        @endif
 
                         <span class="text-xs font-medium text-slate-600">
                             Actualizado el {{ $fechaHoy }}
@@ -45,7 +52,8 @@
                         </span>
                         <span class="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-2.5 py-1 font-semibold text-slate-700 ring-1 ring-inset ring-white/80">
                             <i data-lucide="warehouse" class="size-3.5" aria-hidden="true"></i>
-                            Almacén principal · 48 ubicaciones
+                            {{ number_format($totalAlmacenes, 0, ',', '.') }}
+                            {{ $totalAlmacenes === 1 ? 'almacén activo' : 'almacenes activos' }}
                         </span>
                     </div>
                 </div>
@@ -113,7 +121,7 @@
                 </div>
 
                 <div>
-                    @foreach ($mock['low_stock'] as $product)
+                    @forelse ($mock['low_stock'] as $product)
                         @php
                             $stockPercent = $product['min'] > 0 ? min(100, round(($product['stock'] / $product['min']) * 100)) : 0;
                             $isCritical = $product['stock'] <= 5;
@@ -125,7 +133,7 @@
                                 'bg-rose-50 text-rose-700' => $isCritical,
                                 'bg-amber-50 text-amber-800' => ! $isCritical,
                             ]) aria-hidden="true">
-                                {{ $product['stock'] }}
+                                {{ number_format((float) $product['stock'], 0, ',', '.') }}
                             </span>
 
                             <div class="min-w-0 grow">
@@ -133,7 +141,8 @@
                                     {{ $product['product'] }}
                                 </p>
                                 <p class="mt-0.5 text-xs text-slate-500">
-                                    SKU {{ $product['sku'] }} · mínimo {{ $product['min'] }} unidades
+                                    SKU {{ $product['sku'] }} · mínimo
+                                    {{ number_format((float) $product['min'], 0, ',', '.') }} unidades
                                 </p>
 
                                 <div class="mt-1.5 flex items-center gap-2">
@@ -147,14 +156,22 @@
                             <x-status-badge :status="$isCritical ? 'critical' : 'low'"
                                 :label="$isCritical ? 'Crítico' : 'Bajo'" />
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="px-5 py-8">
+                            <x-table-empty icon="circle-check"
+                                title="Sin alertas de stock"
+                                message="Todos los productos activos están por encima de su stock mínimo." />
+                        </div>
+                    @endforelse
                 </div>
 
                 <div class="nova-table-foot !py-2.5">
                     <span>Reposición sugerida en las próximas 48 h</span>
-                    <a href="{{ route('customers.index') }}" class="font-semibold text-nova-700 hover:text-nova-900">
-                        Gestionar proveedores
-                    </a>
+                    @can('manage-proveedores')
+                        <a href="{{ route('proveedores.index') }}" class="font-semibold text-nova-700 hover:text-nova-900">
+                            Gestionar proveedores
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -500,7 +517,11 @@
                         <p class="nova-card-subtitle">Unidades vendidas y aporte a la facturación</p>
                     </div>
 
-                    <span class="nova-demo-badge">Demo</span>
+                    @if ($mock['top_products_real'] ?? false)
+                        <span class="nova-demo-badge">Salidas reales</span>
+                    @else
+                        <span class="nova-demo-badge">Demo</span>
+                    @endif
                 </div>
 
                 <div class="nova-table-scroll">
@@ -580,9 +601,15 @@
         </section>
 
         <p class="pb-1 text-xs leading-5 text-slate-500">
-            <strong class="font-semibold text-slate-600">Datos de demostración:</strong>
-            las métricas de inventario, ventas y facturación son valores de ejemplo.
-            Reemplazar por consultas reales cuando estén disponibles los módulos correspondientes.
+            @if ($hasInventoryData)
+                <strong class="font-semibold text-slate-600">Datos reales:</strong>
+                el inventario, las alertas y la rotación provienen de la base de datos.
+                Las métricas de ventas y facturación continúan siendo de demostración.
+            @else
+                <strong class="font-semibold text-slate-600">Datos de demostración:</strong>
+                las métricas de inventario, ventas y facturación son valores de ejemplo.
+                Registra productos para activar los indicadores reales de inventario.
+            @endif
         </p>
     </div>
 @endsection
@@ -598,6 +625,7 @@
             const sales = @json($mock['sales_chart']);
             const inventory = @json($mock['inventory_chart']);
             const billing = @json($mock['billing_chart']);
+            const inventoryInUnits = inventory.total_label === 'Unidades';
 
             const isDark = document.documentElement.classList.contains('dark');
             const textColor = isDark ? '#a8bcc0' : '#6b7f86';
@@ -703,7 +731,7 @@
                                 show: true,
                                 total: {
                                     show: true,
-                                    label: 'Categorías',
+                                    label: inventoryInUnits ? 'Unidades' : 'Categorías',
                                     fontSize: '11px',
                                     color: textColor,
                                 },
@@ -711,13 +739,22 @@
                                     fontSize: '22px',
                                     fontWeight: 600,
                                     color: isDark ? '#e3edee' : '#1e2f34',
+                                    formatter: (value) => inventoryInUnits
+                                        ? Number(value).toLocaleString('es-ES', { maximumFractionDigits: 0 })
+                                        : value + '%',
                                 },
                             },
                         },
                     },
                 },
                 stroke: { width: 3, colors: [isDark ? '#13252a' : '#ffffff'] },
-                tooltip: { y: { formatter: (value) => value + '%' } },
+                tooltip: {
+                    y: {
+                        formatter: (value) => inventoryInUnits
+                            ? Number(value).toLocaleString('es-ES', { maximumFractionDigits: 2 }) + ' uds'
+                            : value + '%',
+                    },
+                },
             }).render();
 
             new ApexCharts(document.querySelector('#billingChart'), {
