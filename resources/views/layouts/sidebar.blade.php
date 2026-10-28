@@ -11,20 +11,26 @@
                 'active' => request()->routeIs('dashboard'),
             ],
         ],
-        'Operación' => [
+        'Operación' => array_values(array_filter([
             [
                 'label' => 'Clientes',
                 'icon' => 'users',
                 'route' => 'customers.index',
                 'active' => request()->routeIs('customers.*'),
             ],
+            $usuario?->can('manage-ofertas') ? [
+                'label' => 'Ofertas',
+                'icon' => 'file-text',
+                'route' => 'ofertas.index',
+                'active' => request()->routeIs('ofertas.*'),
+            ] : null,
             [
                 'label' => 'Productos',
                 'icon' => 'package',
                 'route' => 'productos.index',
                 'active' => request()->routeIs('productos.*'),
             ],
-        ],
+        ])),
         'Inventario' => [
             [
                 'label' => 'Existencias',
@@ -77,6 +83,12 @@
                 'icon' => 'briefcase',
                 'route' => 'servicios.index',
                 'active' => request()->routeIs('servicios.*'),
+            ] : null,
+            $usuario?->can('manage-nomencladores') ? [
+                'label' => 'Gastos',
+                'icon' => 'receipt',
+                'route' => 'gastos.index',
+                'active' => request()->routeIs('gastos.*'),
             ] : null,
             $usuario?->can('manage-nomencladores') ? [
                 'label' => 'Nomencladores',

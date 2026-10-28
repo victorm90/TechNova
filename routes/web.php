@@ -7,8 +7,10 @@ use App\Http\Controllers\CategoriaProductoController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EntradaInventarioController;
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\MunicipioController;
+use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\ProductLandingController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -44,6 +46,10 @@ Route::middleware('auth')->group(function () {
             'update' => 'customers.update',
             'destroy' => 'customers.destroy',
         ]);
+
+    Route::middleware('can:manage-ofertas')->group(function () {
+        Route::resource('ofertas', OfertaController::class);
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -164,7 +170,11 @@ Route::middleware('auth')->group(function () {
             ->name('municipios.index');
         Route::get('/nomencladores/unidades-medida', [UnidadMedidaController::class, 'index'])
             ->name('unidades-medida.index');
-        Route::get('/nomencladores/servicios', [ServicioController::class, 'index'])
-            ->name('servicios.index');
+
+        Route::resource('servicios', ServicioController::class)
+            ->except('show');
+
+        Route::resource('gastos', GastoController::class)
+            ->except('show');
     });
 });

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AlmacenSeeder::class,
             ProveedorSeeder::class,
             ServicioSeeder::class,
+            GastoSeeder::class,
             ProductoSeeder::class,
         ]);
 

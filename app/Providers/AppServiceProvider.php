@@ -26,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-nomencladores', fn (User $user): bool => $user->isAdmin());
         Gate::define('manage-productos', fn (User $user): bool => $user->isAdmin());
         Gate::define('manage-proveedores', fn (User $user): bool => $user->isAdmin());
+        Gate::define(
+            'manage-ofertas',
+            fn (User $user): bool => $user->isAdmin() || $user->role === User::ROLE_OPERATOR,
+        );
         Gate::define('ver-inventario', fn (User $user): bool => true);
         Gate::define(
             'registrar-movimientos',

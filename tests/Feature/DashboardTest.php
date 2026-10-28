@@ -77,7 +77,7 @@ test('the services page lists the services with their unit of measure', function
 
     $this->get(route('servicios.index'))
         ->assertOk()
-        ->assertViewIs('nomencladores.index')
+        ->assertViewIs('servicios.index')
         ->assertSee('Mantenimiento general')
         ->assertSee('Hora')
         ->assertSee('Activo');

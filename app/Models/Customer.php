@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 
 #[Fillable(['name', 'address', 'phone', 'identity_card'])]
@@ -16,6 +17,14 @@ class Customer extends Model
 
     /** @use HasFactory<CustomerFactory> */
     use HasFactory;
+
+    /**
+     * Ofertas realizadas al cliente.
+     */
+    public function ofertas(): HasMany
+    {
+        return $this->hasMany(Oferta::class);
+    }
 
     /**
      * @return array<string, array<int, string|ValidationRule>>
