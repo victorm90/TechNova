@@ -180,6 +180,54 @@ test('la imagen del producto se guarda en el disco público', function () {
     Storage::disk('public')->assertExists($producto->imagen);
 });
 
+test('al reemplazar la imagen se elimina el archivo anterior', function () {
+    Storage::fake('public');
+
+    $this->actingAs($this->admin);
+
+    $this->post(route('productos.store'), payloadProducto([
+        'imagen' => UploadedFile::fake()->image('anterior.jpg'),
+    ]))->assertSessionHasNoErrors();
+
+    $producto = Producto::query()->firstOrFail();
+    $imagenAnterior = $producto->imagen;
+
+    $this->put(route('productos.update', $producto), payloadProducto([
+        'imagen' => UploadedFile::fake()->image('nueva.jpg'),
+        'activo' => true,
+    ]))->assertSessionHasNoErrors();
+
+    $producto->refresh();
+
+    expect($producto->imagen)->not->toBe($imagenAnterior);
+    Storage::disk('public')->assertMissing($imagenAnterior);
+    Storage::disk('public')->assertExists($producto->imagen);
+});
+
+test('actualizar un producto con una ruta de imagen vacía no falla', function () {
+    Storage::fake('public');
+
+    $producto = Producto::factory()->create([
+        'nombre' => 'Taladro percutor',
+        'categoria_producto_id' => $this->categoria->id,
+        'unidad_medida_id' => $this->unidad->id,
+        'imagen' => '',
+    ]);
+
+    $this->actingAs($this->admin);
+
+    $this->put(route('productos.update', $producto), payloadProducto([
+        'imagen' => UploadedFile::fake()->image('nueva.jpg'),
+        'activo' => true,
+    ]))->assertSessionHasNoErrors();
+
+    $producto->refresh();
+
+    expect($producto->imagen)->not->toBeNull()
+        ->and($producto->imagen)->not->toBe('');
+    Storage::disk('public')->assertExists($producto->imagen);
+});
+
 test('no se permite duplicar el nombre de un producto dentro de la misma categoría', function () {
     $this->actingAs($this->admin);
 

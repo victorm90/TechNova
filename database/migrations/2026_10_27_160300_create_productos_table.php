@@ -21,9 +21,12 @@ return new class extends Migration
                 ->constrained('unidad_medidas')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
+            $table->string('imagen', 255)
+                ->nullable()
+                ->comment('Ruta relativa de la imagen en el disco público');
             $table->decimal('precio_compra', 12, 2)->default(0);
             $table->decimal('precio_venta', 12, 2)->default(0);
-            $table->decimal('stock_minimo', 12, 2)->default(0);
+            $table->unsignedInteger('stock_minimo')->default(0);
             $table->boolean('activo')->default(true);
             $table->timestamps();
 

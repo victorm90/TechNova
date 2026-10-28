@@ -18,7 +18,7 @@ return new class extends Migration
                 ->constrained('almacenes')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
-            $table->decimal('cantidad', 12, 2)->default(0);
+            $table->unsignedInteger('cantidad')->default(0);
             $table->decimal('costo_promedio', 12, 4)->default(0);
             $table->timestamp('ultimo_movimiento_at')->nullable();
             $table->timestamps();

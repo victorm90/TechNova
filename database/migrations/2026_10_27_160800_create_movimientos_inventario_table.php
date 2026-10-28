@@ -24,8 +24,8 @@ return new class extends Migration
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
             $table->string('tipo', 10)->comment('entrada o salida');
-            $table->decimal('cantidad', 12, 2);
-            $table->decimal('saldo_resultante', 12, 2);
+            $table->integer('cantidad');
+            $table->unsignedInteger('saldo_resultante');
             $table->decimal('costo_unitario', 12, 4)->default(0);
             $table->foreignId('user_id')
                 ->nullable()

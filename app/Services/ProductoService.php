@@ -46,11 +46,10 @@ class ProductoService
             if (($datos['imagen'] ?? null) instanceof UploadedFile) {
                 $nuevaImagen = $this->guardarImagen($datos['imagen']);
 
-                if ($nuevaImagen !== null && $imagen !== null) {
-                    Storage::disk('public')->delete($imagen);
+                if ($nuevaImagen !== null) {
+                    $this->eliminarImagen($imagen);
+                    $imagen = $nuevaImagen;
                 }
-
-                $imagen = $nuevaImagen;
             }
 
             $producto->update([
@@ -74,6 +73,18 @@ class ProductoService
             return null;
         }
 
-        return $imagen->store('productos', 'public');
+        $ruta = $imagen->store('productos', 'public');
+
+        return is_string($ruta) && $ruta !== '' ? $ruta : null;
+    }
+
+    /**
+     * Eliminar del disco una imagen previa, ignorando rutas vacías.
+     */
+    private function eliminarImagen(?string $ruta): void
+    {
+        if (is_string($ruta) && $ruta !== '') {
+            Storage::disk('public')->delete($ruta);
+        }
     }
 }

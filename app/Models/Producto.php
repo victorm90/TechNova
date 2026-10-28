@@ -82,7 +82,7 @@ class Producto extends Model
      */
     public function imagenUrl(): string
     {
-        if ($this->imagen) {
+        if (is_string($this->imagen) && $this->imagen !== '') {
             return asset('storage/'.$this->imagen);
         }
 

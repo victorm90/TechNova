@@ -18,7 +18,7 @@ return new class extends Migration
                 ->constrained('productos')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
-            $table->decimal('cantidad', 12, 2);
+            $table->unsignedInteger('cantidad');
             $table->decimal('costo_unitario', 12, 2)->default(0);
             $table->decimal('subtotal', 14, 2)->default(0);
             $table->timestamps();
