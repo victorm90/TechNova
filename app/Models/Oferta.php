@@ -9,8 +9,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['codigo', 'customer_id', 'fecha', 'estado'])]
+#[Fillable([
+    'codigo',
+    'customer_id',
+    'fecha',
+    'estado',
+    'nota',
+    'forma_pago',
+    'observaciones',
+    'firma_pie',
+    'vigencia_dias',
+    'almacen_id',
+    'facturada_at',
+])]
 class Oferta extends Model
 {
     /** @use HasFactory<OfertaFactory> */
@@ -24,6 +37,8 @@ class Oferta extends Model
 
     public const ESTADO_RECHAZADA = 'rechazada';
 
+    public const ESTADO_FACTURADO = 'facturado';
+
     /**
      * Estados disponibles de una oferta.
      *
@@ -36,6 +51,7 @@ class Oferta extends Model
             self::ESTADO_ENVIADA => 'Enviada',
             self::ESTADO_ACEPTADA => 'Aceptada',
             self::ESTADO_RECHAZADA => 'Rechazada',
+            self::ESTADO_FACTURADO => 'Facturado',
         ];
     }
 
@@ -64,6 +80,30 @@ class Oferta extends Model
     }
 
     /**
+     * Factura generada al confirmar la oferta (si existe).
+     */
+    public function factura(): HasOne
+    {
+        return $this->hasOne(Factura::class);
+    }
+
+    /**
+     * Almacén por defecto para consumir productos de la oferta.
+     */
+    public function almacen(): BelongsTo
+    {
+        return $this->belongsTo(Almacen::class);
+    }
+
+    /**
+     * Indica si la oferta ya fue facturada y, por tanto, es inmutable.
+     */
+    public function estaFacturada(): bool
+    {
+        return $this->estado === self::ESTADO_FACTURADO || $this->facturada_at !== null;
+    }
+
+    /**
      * Nombre visible del estado.
      */
     public function estadoLabel(): string
@@ -80,6 +120,7 @@ class Oferta extends Model
             self::ESTADO_BORRADOR => 'draft',
             self::ESTADO_ENVIADA => 'pending',
             self::ESTADO_ACEPTADA => 'active',
+            self::ESTADO_FACTURADO => 'paid',
             default => 'cancelled',
         };
     }
@@ -105,12 +146,25 @@ class Oferta extends Model
     }
 
     /**
+     * Importe total de los productos de almacén consumidos por los servicios.
+     */
+    protected function totalProductos(): Attribute
+    {
+        return Attribute::get(
+            fn (): float => round((float) $this->servicios->sum('total_productos'), 2),
+        );
+    }
+
+    /**
      * Importe total de la oferta.
      */
     protected function total(): Attribute
     {
         return Attribute::get(
-            fn (): float => round($this->total_servicios + $this->total_gastos, 2),
+            fn (): float => round(
+                $this->total_servicios + $this->total_productos + $this->total_gastos,
+                2,
+            ),
         );
     }
 
@@ -121,6 +175,8 @@ class Oferta extends Model
     {
         return [
             'fecha' => 'date',
+            'vigencia_dias' => 'integer',
+            'facturada_at' => 'datetime',
         ];
     }
 }

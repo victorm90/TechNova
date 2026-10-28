@@ -70,6 +70,14 @@ class Producto extends Model
     }
 
     /**
+     * Líneas de oferta que consumen el producto.
+     */
+    public function ofertaServicioProductos(): HasMany
+    {
+        return $this->hasMany(OfertaServicioProducto::class);
+    }
+
+    /**
      * Limitar la consulta a productos activos.
      */
     public function scopeActivos(Builder $query): void

@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoriaProductoController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EntradaInventarioController;
+use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\MunicipioController;
@@ -48,7 +49,30 @@ Route::middleware('auth')->group(function () {
         ]);
 
     Route::middleware('can:manage-ofertas')->group(function () {
+        Route::post('ofertas/rapida', [OfertaController::class, 'storeRapida'])
+            ->name('ofertas.storeRapida');
+
         Route::resource('ofertas', OfertaController::class);
+
+        Route::post('ofertas/{oferta}/servicios', [OfertaController::class, 'storeServicio'])
+            ->name('ofertas.servicios.store');
+        Route::post('ofertas/{oferta}/servicios/{linea}/productos', [OfertaController::class, 'storeProducto'])
+            ->name('ofertas.servicios.productos.store');
+        Route::post('ofertas/{oferta}/gastos', [OfertaController::class, 'storeGasto'])
+            ->name('ofertas.gastos.store');
+        Route::post('ofertas/{oferta}/facturar', [OfertaController::class, 'facturar'])
+            ->name('ofertas.facturar');
+        Route::get('ofertas/{oferta}/imprimir', [OfertaController::class, 'imprimir'])
+            ->name('ofertas.imprimir');
+        Route::get('ofertas/{oferta}/pdf', [OfertaController::class, 'pdf'])
+            ->name('ofertas.pdf');
+
+        Route::get('facturas/{factura}', [FacturaController::class, 'show'])
+            ->name('facturas.show');
+        Route::get('facturas/{factura}/imprimir', [FacturaController::class, 'imprimir'])
+            ->name('facturas.imprimir');
+        Route::get('facturas/{factura}/pdf', [FacturaController::class, 'pdf'])
+            ->name('facturas.pdf');
     });
 
     /*

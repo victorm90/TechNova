@@ -14,7 +14,13 @@
         ],
     ])
 
-    <div class="nova-table-card card overflow-hidden bg-white dark:bg-zink-700">
+    <div class="nova-table-card card overflow-hidden bg-white dark:bg-zink-700"
+        x-data="{ nuevaOferta: {{ $errors->any() ? 'true' : 'false' }} }">
+        <datalist id="clientes-oferta">
+            @foreach ($clientes as $cliente)
+                <option value="{{ $cliente->name }}"></option>
+            @endforeach
+        </datalist>
         <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 xl:flex-row xl:items-center xl:justify-between dark:border-zink-500">
             <div class="flex items-center gap-2">
                 <span class="text-sm font-semibold text-slate-700 dark:text-zink-100">Ofertas</span>
@@ -56,11 +62,11 @@
                     @endif
                 </form>
 
-                <a href="{{ route('ofertas.create') }}"
+                <button type="button" @click="nuevaOferta = true"
                     class="btn inline-flex items-center justify-center border-nova-500 bg-nova-500 text-white hover:bg-nova-600">
                     <i data-lucide="plus" class="me-1.5 size-4"></i>
                     Nueva oferta
-                </a>
+                </button>
             </div>
         </div>
 
@@ -152,10 +158,10 @@
                                         :message="$search !== '' || $estado !== ''
                                             ? 'No encontramos ofertas con los filtros seleccionados.'
                                             : 'Crea una oferta y añade servicios y gastos del catálogo.'">
-                                        <a href="{{ route('ofertas.create') }}"
+                                        <button type="button" @click="nuevaOferta = true"
                                             class="btn border-nova-500 bg-nova-500 text-white hover:bg-nova-600">
                                             Nueva oferta
-                                        </a>
+                                        </button>
                                     </x-table-empty>
                                 </td>
                             </tr>
@@ -165,6 +171,84 @@
             </div>
 
             <x-table-pagination :paginator="$ofertas" label="ofertas" />
+        </div>
+
+        {{-- Alta rápida de oferta --}}
+        <div x-show="nuevaOferta" x-cloak class="fixed inset-0 overflow-y-auto" style="z-index:1050" role="dialog"
+            aria-modal="true" aria-labelledby="nueva-oferta-titulo">
+            <div class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm" @click="nuevaOferta = false" aria-hidden="true"></div>
+
+            <div class="relative flex min-h-full items-start justify-center px-4 pb-8 pt-16 md:pt-20">
+                <div @click.outside="nuevaOferta = false"
+                    class="w-full max-w-xl overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-zink-700">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-zink-500">
+                        <div class="flex items-center gap-3">
+                            <div class="flex size-10 items-center justify-center rounded-lg bg-nova-500/10">
+                                <i data-lucide="file-plus" class="size-5 text-nova-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-nova-500">Ofertas</p>
+                                <h5 id="nueva-oferta-titulo" class="text-lg font-semibold text-slate-800 dark:text-zink-100">
+                                    Nueva oferta
+                                </h5>
+                            </div>
+                        </div>
+
+                        <button type="button" @click="nuevaOferta = false"
+                            class="inline-flex size-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-zink-600">
+                            <i data-lucide="x" class="size-5"></i>
+                        </button>
+                    </div>
+
+                    <form method="POST" action="{{ route('ofertas.storeRapida') }}" class="space-y-4 p-6">
+                        @csrf
+
+                        @if ($errors->any())
+                            <div class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                                <ul class="list-inside list-disc space-y-0.5">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div>
+                            <label for="cliente_nombre" class="mb-2 inline-block text-sm font-medium">
+                                Nombre del cliente <span class="text-rose-500">*</span>
+                            </label>
+                            <input id="cliente_nombre" name="cliente_nombre" type="text" list="clientes-oferta"
+                                value="{{ old('cliente_nombre') }}" required maxlength="50" autocomplete="off"
+                                placeholder="Escriba el nombre del cliente"
+                                class="form-input w-full border-slate-200 dark:border-zink-500 dark:bg-zink-700">
+                            <p class="mt-1 text-xs text-slate-400">
+                                Si el nombre coincide con un cliente existente se reutilizará. Si es nuevo, se creará con ese nombre y podrá completar sus datos después.
+                            </p>
+                        </div>
+
+                        <div>
+                            <label for="fecha_rapida" class="mb-2 inline-block text-sm font-medium">Fecha</label>
+                            <input id="fecha_rapida" name="fecha" type="date"
+                                value="{{ old('fecha', now()->toDateString()) }}"
+                                class="form-input w-full border-slate-200 dark:border-zink-500 dark:bg-zink-700">
+                        </div>
+
+                        <p class="rounded-lg border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-sky-700">
+                            Después de guardar podrá añadir servicios, gastos y productos, ajustar precios y completar los datos de impresión.
+                        </p>
+
+                        <div class="flex justify-end gap-2 border-t border-slate-200 pt-4 dark:border-zink-500">
+                            <button type="button" @click="nuevaOferta = false" class="btn border-slate-200 text-slate-500">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn border-nova-500 bg-nova-500 text-white hover:bg-nova-600">
+                                <i data-lucide="save" class="me-1.5 size-4"></i>
+                                Crear y editar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

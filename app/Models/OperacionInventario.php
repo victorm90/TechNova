@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'almacen_id',
     'proveedor_id',
     'user_id',
+    'factura_id',
     'referencia',
     'notas',
     'total',
@@ -65,6 +66,14 @@ class OperacionInventario extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Factura que originó la operación de inventario.
+     */
+    public function factura(): BelongsTo
+    {
+        return $this->belongsTo(Factura::class);
     }
 
     /**

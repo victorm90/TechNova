@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RegistraHistorialPrecio;
 use Database\Factories\OfertaGastoFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,6 +15,8 @@ class OfertaGasto extends Model
 {
     /** @use HasFactory<OfertaGastoFactory> */
     use HasFactory;
+
+    use RegistraHistorialPrecio;
 
     /**
      * Oferta a la que pertenece la línea.
