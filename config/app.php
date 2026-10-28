@@ -42,6 +42,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | URL de assets
+    |--------------------------------------------------------------------------
+    |
+    | Permite servir CSS/JS desde un dominio distinto (por ejemplo, un túnel
+    | HTTPS o GitHub Codespaces) sin generar contenido mixto.
+    |
+    */
+
+    'asset_url' => env('ASSET_URL'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |

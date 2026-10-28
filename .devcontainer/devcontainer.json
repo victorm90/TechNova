@@ -1,0 +1,28 @@
+{
+    "name": "TechNova Laravel",
+    "image": "mcr.microsoft.com/devcontainers/php:8.4-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "22"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "postStartCommand": "bash .devcontainer/start.sh",
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": {
+            "label": "TechNova",
+            "onAutoForward": "openBrowser",
+            "visibility": "public"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "onecentlin.laravel-blade"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
+}
